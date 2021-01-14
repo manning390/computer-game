@@ -1,0 +1,6 @@
+[submodule "vendor/SFML"]
+	path = vendor/SFML
+	url = git@github.com:SFML/SFML.git
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = git@github.com:gabime/spdlog.git

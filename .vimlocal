@@ -1,5 +1,0 @@
-command! -nargs=1 Asset :!\cat assets/manifest.json | grep <q-args>
-
-let @w="cwwidth\<Esc>"
-let @h="cwheight\<Esc>"
-
