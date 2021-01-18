@@ -18,10 +18,11 @@ message("C++ compiler flags: ${CMAKE_CXX_FLAGS}")
 # Libraries
 SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
 
-find_package(SFML 2.5 REQUIRED COMPONENTS system window graphics)
-set(SFML_LIBRARIES sfml-system sfml-window sfml-graphics)
+# find_package(SFML 2.5 REQUIRED COMPONENTS system window graphics)
+# set(SFML_LIBRARIES sfml-system sfml-window sfml-graphics)
 
 find_package(Threads REQUIRED)
 # find_package(Boost 1.75.0 COMPONENTS log REQUIRED)
 
+add_subdirectory(vendor)
 add_subdirectory(src)
