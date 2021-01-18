@@ -1,0 +1,12 @@
+[submodule "vendor/SFML"]
+	path = vendor/SFML
+	url = git@github.com:SFML/SFML.git
+[submodule "vendor/imgui"]
+	path = vendor/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = git@github.com:gabime/spdlog.git
+[submodule "vendor/imgui-sfml"]
+	path = vendor/imgui-sfml
+	url = git@github.com:eliasdaler/imgui-sfml.git
