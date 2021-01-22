@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Atlas.hpp"
+#include "../Engine/Atlas.hpp"
 
 namespace Maps {
   class TestMap : public Engine::Atlas {

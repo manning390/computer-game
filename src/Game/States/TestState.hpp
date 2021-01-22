@@ -2,20 +2,19 @@
 
 #include <memory>
 #include <algorithm>
-#include <boost/log/trivial.hpp>
 
 #include <SFML/Graphics.hpp>
 
 #include "Log.hpp"
 #include "Helper.hpp"
 
-#include "Engine/StateStack.hpp"
-#include "Engine/IState.hpp"
-#include "Engine/Window.hpp"
-#include "Engine/Map.hpp"
+#include "../Engine/StateStack.hpp"
+#include "../Engine/IState.hpp"
+#include "../Engine/Window.hpp"
+#include "../Engine/Map.hpp"
 
-#include "Game/Application.hpp"
-#include "Game/Maps/TestMap.hpp"
+#include "../Application.hpp"
+#include "../Maps/TestMap.hpp"
 
 class TestState : public Engine::IState {
   public:

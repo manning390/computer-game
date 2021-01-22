@@ -9,17 +9,17 @@
 
 
 #include <SFML/Graphics.hpp>
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 
 #include "Constant.hpp"
 #include "Helper.hpp"
 #include "NoCopy.hpp"
 #include "NoMove.hpp"
 
-#include "Engine/AssetProvider.hpp"
-#include "Engine/Atlas.hpp"
-#include "Engine/Window.hpp"
-#include "Engine/StateStack.hpp"
+#include "../Engine/AssetProvider.hpp"
+#include "../Engine/Atlas.hpp"
+#include "../Engine/Window.hpp"
+#include "../Engine/StateStack.hpp"
 #include "States/TestState.hpp"
 
 class Application : public Traits::NoCopy, public Traits::NoMove, public Engine::AssetProvider {

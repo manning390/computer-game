@@ -1,4 +1,5 @@
 #include "Helper.hpp"
+#include <Constant.hpp>
 
 std::vector<sf::IntRect> Helper::getTileRects(
     const uint t_cols,

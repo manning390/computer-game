@@ -1,3 +1,6 @@
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+set(CMAKE_GENERATOR_PLATFORM Win32)
+endif()
 cmake_minimum_required(VERSION 3.16)
 project(ComputerGame VERSION 0.0.0 LANGUAGES CXX)
 
