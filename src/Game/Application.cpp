@@ -16,7 +16,7 @@ void Application::init() {
 
   // Create window
   m_window = std::make_shared<Engine::Window>();
-  m_frame_time = sf::seconds(1.0 / m_window->getFps());
+  m_frame_time = sf::seconds(1.0f / m_window->getFps());
 
   // Initiate the state stack
   m_stack = std::make_shared<Engine::StateStack>();

@@ -85,7 +85,7 @@ void Engine::Map::renderLayer(std::shared_ptr<Engine::Window> t_window, Engine::
         cached_texture = m_textures[tile];
       }
       m_sprite.setTextureRect(m_uvs[tile]);
-      m_sprite.setPosition(m_x + i * m_tile_width, m_y + j * m_tile_height);
+      m_sprite.setPosition(m_x + i * float(m_tile_width), m_y + j * float(m_tile_height));
 
       t_window->draw(m_sprite);
     }

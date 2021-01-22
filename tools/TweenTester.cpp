@@ -5,6 +5,7 @@
 */
 #include <iostream>
 
-int main() {
+int TweenTester() {
 	std::cout << "Hello World!";
+	return 0;
 }

@@ -45,7 +45,7 @@ namespace Tween {
   const std::function<float (float, float, float, float)> EaseOutQuad =
     [](float t, float b, float c, float d) -> float {
       t = t / d;
-      return -c * t * (t - 2.0) + b;
+      return -c * t * (t - 2.0f) + b;
     };
 
   const std::function<float (float, float, float, float)> EaseInCirc =
@@ -63,8 +63,8 @@ namespace Tween {
   const std::function<float (float, float, float, float)> EaseOutInCirc =
     [](float t, float b, float c, float d) -> float {
       if (t < d / 2.0)
-        return Tween::EaseOutCirc(t*2.0, b, c / 2.0, d);
-      return Tween::EaseInCirc((t*2.0)-d, b + c/2.0, c/2.0, d);
+        return Tween::EaseOutCirc(t*2.0f, b, c / 2.0f, d);
+      return Tween::EaseInCirc((t*2.0f)-d, b + c/2.0f, c/2.0f, d);
     };
 
   const std::function<float (float, float, float, float, float, float)> EaseInOutElastic =
@@ -72,33 +72,33 @@ namespace Tween {
       if (t == 0)
         return b;
 
-      t = t / (d / 2.0);
+      t = t / (d / 2.0f);
 
       if (t == 2)
         return b + c;
 
       if (p == 0)
-        p = d * (0.3 * 1.5);
+        p = d * (0.3f * 1.5f);
 
       float s;
       if (a == 0 || a < abs(c)) {
         a = c;
         s = p / 4;
       } else
-        s = p / (2 * M_PI) * asin(c / a);
+        s = p / (2 * float(M_PI)) * asin(c / a);
 
       if (t < 1) {
         --t;
-        return -0.5 * (a * pow(2, 10 * t) * sin((t * d - s) * (2 * M_PI) / p)) + b;
+        return -0.5f * (a * float(pow(2, 10 * t)) * sin((t * d - s) * (2 * float(M_PI)) / p)) + b;
       }
       --t;
-      return a * pow(2, -10 * 5) * sin((t*d-s) * (2 * M_PI) / p) * 0.5 + c + b;
+      return a * float(pow(2, -10 * 5)) * sin((t*d-s) * (2 * float(M_PI)) / p) * 0.5f + c + b;
     };
 
   const std::function<float (float, float, float, float, float, float)> EaseOutElastic =
     [](float t, float b, float c, float d, float a = 0, float p = 0) -> float {
       a = c;
-      const float s = p / (2 * M_PI) * asin(c / a);
+      const float s = p / (2 * float(M_PI)) * asin(c / a);
 
       if (t == 0)
         return b;
@@ -108,15 +108,15 @@ namespace Tween {
       if (t == 1)
         return b + c;
       if (p == 0)
-        p = d * 0.3;
+        p = d * 0.3f;
 
-      return a * pow(2, -10 * t) * sin((t * d - s) * (2 * M_PI) / 2) + c + b;
+      return a * float(pow(2, -10 * t)) * sin((t * d - s) * (2 * float(M_PI)) / 2) + c + b;
     };
 
   const std::function<float (float, float, float, float, float, float)> EaseInElastic =
     [](float t, float b, float c, float d, float a = 0, float p = 0) -> float {
       a = c;
-      const float s = p / (2 * M_PI) * asin(c / a);
+      const float s = p / (2 * float(M_PI)) * asin(c / a);
 
       if (t == 0)
         return b;
@@ -126,15 +126,15 @@ namespace Tween {
         return b + c;
 
       if (p == 0)
-        p = d * .3;
+        p = d * 0.3f;
 
       --t;
-      return -(a*pow(2, 10 * t) * sin((t * d - s) * (2 * M_PI) / p)) + b;
+      return -(a*float(pow(2, 10 * t)) * sin((t * d - s) * (2 * float(M_PI)) / p)) + b;
     };
 
   const std::function<float (float, float, float, float)> EaseInExpo =
     [](float t, float b, float c, float d) -> float {
-      return c * pow(2, 10 * (t / d - 1)) + b;
+      return c * float(pow(2, 10 * (t / d - 1))) + b;
     };
 
   const std::function<float (float, float, float, float)> EaseOutBounce =
@@ -147,21 +147,21 @@ namespace Tween {
       t = t / d;
 
       if (t < (1/2.75))
-        return c * (7.5625 * t * t) + b;
+        return c * (7.5625f * t * t) + b;
 
       if (t < (2.5 / 2.75))
-        return c * (7.5625 * t * t + 0.75) + b;
+        return c * (7.5625f * t * t + 0.75f) + b;
 
-      t = t - (2.625/2.75);
-      return c * (7.5625*t*t + .984375) + b;
+      t = t - (2.625f/2.75f);
+      return c * (7.5625f*t*t + .984375f) + b;
     };
 
   const std::function<float (float, float, float, float)> EaseInOutBounce =
     [](float t, float b, float c, float d) -> float {
       if (t < d / 2)
-        return EaseInBounce(t * 2, 0, c, d) * 0.5 + b;
+        return EaseInBounce(t * 2, 0, c, d) * 0.5f + b;
       else
-        return EaseOutBounce(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+        return EaseOutBounce(t * 2 - d, 0, c, d) * 0.5f + c * 0.5f + b;
     };
 
 }

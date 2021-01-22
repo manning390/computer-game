@@ -5,7 +5,11 @@
 #include "Constant.hpp"
 #include "Game/Application.hpp"
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
+#ifdef linux
+int main(int argc, const char **argv)
+#else
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
+#endif
 {
   Log::init();
 
@@ -15,9 +19,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
   assert(app != nullptr && "main() Can't create Application");
 
   // Handle any command line arguments passed in
-  app->processArguments(argc, argv);
+  //app->processArguments(argc, argv);
 
-  exitCode = app->run();
+  //exitCode = app->run();
 
-  std::exit(exitCode);
+  //std::exit(exitCode);
 }

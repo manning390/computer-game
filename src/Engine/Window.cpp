@@ -41,7 +41,7 @@ void Engine::Window::pollEvent(sf::Event& t_event) {
     }
 
     if(t_event.type == sf::Event::Resized && !m_fullscreen) {
-      m_window->setView(calcView(t_event.size.width, t_event.size.height));
+      m_window->setView(calcView(float(t_event.size.width), float(t_event.size.height)));
     }
 
     if (t_event.type == sf::Event::LostFocus) {}
@@ -69,7 +69,7 @@ void Engine::Window::setFullscreen(bool t_fullscreen) {
     m_fullscreen = true;
   } else if (m_fullscreen && !t_fullscreen) {
     m_window->close();
-    m_window_width = sf::VideoMode::getDesktopMode().height * m_initial_aspect_ratio;
+    m_window_width = sf::VideoMode::getDesktopMode().height * uint(m_initial_aspect_ratio);
     m_window_height = sf::VideoMode::getDesktopMode().height;
     m_window->create(sf::VideoMode(m_window_width, m_window_height), m_window_title, sf::Style::Default);
 
