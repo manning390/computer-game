@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <algorithm>
-#include <boost/log/trivial.hpp>
 
 #include <SFML/Graphics.hpp>
 

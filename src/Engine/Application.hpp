@@ -8,7 +8,6 @@
 #include <string>
 
 #include <SFML/Graphics.hpp>
-#include <boost/log/trivial.hpp>
 
 #include "Constant.hpp"
 #include "Helper.hpp"
