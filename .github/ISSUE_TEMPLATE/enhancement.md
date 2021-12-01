@@ -11,7 +11,6 @@ assignees: 'manning390'
 A clear and concise description of what the feature is.
 
 **Specific Steps**
-Steps to reproduce the behavior:
 - [ ] Create something
 - [ ] Create something else
   - [ ] With nuance
