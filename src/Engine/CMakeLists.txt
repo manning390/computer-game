@@ -3,6 +3,8 @@ add_library(engine
     Animation.cpp
     Atlas.cpp
     AssetProvider.hpp
+    Bitmask.cpp
+    Input.cpp
     IState.hpp
     Map.cpp
     StateStack.cpp
