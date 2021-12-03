@@ -77,8 +77,8 @@ void Engine::Application::loadTilesets() {
  LOG_TRACE("Engine::Application::loadTilesets()");
 
   auto lines = Helper::getFileLines(m_tilesets_manifest_path);
-  for (auto it = lines.begin(); it < lines.end(); it++) {
-    std::string file_path = *it;
+  for (auto it : lines) {
+    std::string file_path = it;
 
     // Instead of the manifest key, lets use what's in the tileset
     auto tileset = std::make_shared<Engine::Tileset>(Engine::Tileset(file_path));
@@ -93,8 +93,8 @@ void Engine::Application::loadTextures() {
   LOG_TRACE("Engine::Application::loadTextures()");
 
   auto lines = Helper::getFileLines(m_textures_manifest_path);
-  for (auto it = lines.begin(); it < lines.end(); it++) {
-    std::istringstream iss(*it);
+  for (auto it : lines) {
+    std::istringstream iss(it);
     std::string key, file_path;
     iss >> key >> file_path;
 
