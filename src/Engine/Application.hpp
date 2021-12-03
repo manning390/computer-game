@@ -3,13 +3,12 @@
 #include <unordered_map>
 #include <iostream>
 #include <memory>
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <string>
 
 #include <SFML/Graphics.hpp>
-#include <boost/log/trivial.hpp>
-#include <vector>
 
 #include "Constant.hpp"
 #include "Helper.hpp"

@@ -1,5 +1,7 @@
 #include "Helper.hpp"
 
+#include "Constant.hpp"
+
 std::vector<sf::IntRect> Helper::getTileRects(
     const uint t_cols,
     const uint t_rows,
@@ -46,6 +48,7 @@ std::vector<std::string> Helper::getFileLines(const std::string t_file_path) {
     file.close();
   } else {
     LOG_ERROR("Unable to load file: {}", t_file_path);
+    std::exit(1);
   }
 
   return file_vec;
