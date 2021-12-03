@@ -19,6 +19,9 @@ void Engine::Application::init() {
   loadTextures();
   loadTilesets();
 
+  // Load input
+  loadBindings();
+
   // Initiate the state stack
   m_stack = std::make_shared<Engine::StateStack>();
 }
@@ -55,7 +58,8 @@ void Engine::Application::loop() {
 
     // Process Input
     m_window->pollEvent(m_event);
-    m_stack->handleInput(m_event);
+    m_input->update();
+    m_stack->handleInput(m_input);
 
     while (lag >= m_frame_time) {
       m_stack->update(m_frame_time.asSeconds());
@@ -77,8 +81,8 @@ void Engine::Application::loadTilesets() {
  LOG_TRACE("Engine::Application::loadTilesets()");
 
   auto lines = Helper::getFileLines(m_tilesets_manifest_path);
-  for (auto it : lines) {
-    std::string file_path = it;
+  for (auto line : lines) {
+    std::string file_path = line;
 
     // Instead of the manifest key, lets use what's in the tileset
     auto tileset = std::make_shared<Engine::Tileset>(Engine::Tileset(file_path));
@@ -93,8 +97,8 @@ void Engine::Application::loadTextures() {
   LOG_TRACE("Engine::Application::loadTextures()");
 
   auto lines = Helper::getFileLines(m_textures_manifest_path);
-  for (auto it : lines) {
-    std::istringstream iss(it);
+  for (auto line : lines) {
+    std::istringstream iss(line);
     std::string key, file_path;
     iss >> key >> file_path;
 
@@ -120,3 +124,21 @@ std::shared_ptr<Engine::Tileset> Engine::Application::getTileset(std::string t_k
   auto tileset = m_tilesets.find(t_key);
   return tileset != m_tilesets.end() ? tileset->second : nullptr;
 }
+
+void Engine::Application::loadBindings() {
+  LOG_TRACE("Engine::Application::loadBindings()");
+
+  m_input = std::make_shared<Engine::Input>(m_default_bindings, m_window);
+  // auto lines = Helper::getFileLines(m_bindings_path);
+
+  // // File exists? Load it
+  // // File doesn't exist, use defaults
+  // uint action = 0;
+  // for (auto line : lines) {
+    // std::istringstream iss(line);
+    // std::
+
+    // ++action;
+  // }
+}
+

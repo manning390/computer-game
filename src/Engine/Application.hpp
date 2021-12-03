@@ -9,6 +9,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <boost/log/trivial.hpp>
+#include <vector>
 
 #include "Constant.hpp"
 #include "Helper.hpp"
@@ -17,6 +18,7 @@
 
 #include "Engine/AssetProvider.hpp"
 #include "Engine/Atlas.hpp"
+#include "Engine/Input.hpp"
 #include "Engine/Window.hpp"
 #include "Engine/StateStack.hpp"
 
@@ -68,8 +70,12 @@ namespace Engine {
       sf::Clock m_clock;
       sf::Time m_frame_time;
 
+      std::vector<Engine::ActionBinding> m_default_bindings;
+
       const std::string m_tilesets_manifest_path;
       const std::string m_textures_manifest_path;
+
+      std::shared_ptr<Engine::Input> m_input;
 
       /**
       * @brief Game state stack
@@ -81,7 +87,7 @@ namespace Engine {
       * @brief Sets up the Application once
       *
       */
-      void init(void);
+      virtual void init(void);
 
       /**
       * @brief Loads the starting state of the Application
@@ -96,7 +102,7 @@ namespace Engine {
       void loop();
 
       /**
-      * @breif Load allt he tilesets and store them in a hasmap
+      * @brief Load allt he tilesets and store them in a hasmap
       *
       */
       void loadTilesets();
@@ -106,5 +112,12 @@ namespace Engine {
       *
       */
       void loadTextures();
+
+      /**
+       * @brief Load the bindings and set m_input with them
+       * if they don't exist then just use the defaults
+       *
+       */
+      void loadBindings();
   };
 }

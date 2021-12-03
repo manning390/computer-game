@@ -17,9 +17,9 @@ std::shared_ptr<Engine::IState> Engine::StateStack::top(void) {
   return m_states.back();
 }
 
-void Engine::StateStack::handleInput(sf::Event t_event) {
+void Engine::StateStack::handleInput(std::shared_ptr<Engine::Input> t_input) {
   if (!m_states.empty()) {
-    m_states.back()->handleInput(t_event);
+    m_states.back()->handleInput(t_input);
   }
 }
 

@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Window.hpp"
+#include "Input.hpp"
 
 namespace Engine {
   class StateStack;
@@ -30,7 +31,7 @@ namespace Engine {
        * @brief runs after the update step before the render step
        *
        */
-      virtual void handleInput(sf::Event t_event) = 0;
+      virtual void handleInput(std::shared_ptr<Engine::Input> t_input) = 0;
 
       /**
        * @brief runs when the state is entered

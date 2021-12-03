@@ -33,3 +33,8 @@ void Engine::Bitmask::clearBit(int t_pos) {
 void Engine::Bitmask::clear() {
   m_bits = 0;
 }
+
+std::string Engine::Bitmask::to_string() {
+  return std::to_string(m_bits);
+}
+

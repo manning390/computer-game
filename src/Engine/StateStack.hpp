@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Window.hpp"
+#include "Input.hpp"
 
 namespace Engine {
   class IState;
@@ -39,7 +40,7 @@ namespace Engine {
        *
        * @param t_event the event off the top of the event queue this frame
        */
-      void handleInput(sf::Event t_event);
+      void handleInput(std::shared_ptr<Engine::Input> t_input);
 
       /**
        * @brief Runs through the stack in decending order and calls state update()

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Constant.hpp"
 
 namespace Engine {
@@ -20,6 +22,8 @@ namespace Engine {
       void clearBit(int t_pos);
 
       void clear(void);
+
+      std::string to_string(void);
 
     private:
       uint m_bits;

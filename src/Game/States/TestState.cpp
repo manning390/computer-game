@@ -29,14 +29,10 @@ void TestState::render(std::shared_ptr<Engine::Window> t_window) {
   t_window->draw(jim);
 }
 
-void TestState::handleInput(sf::Event t_event) {
-  if (t_event.type == sf::Event::MouseButtonPressed && !m_mouse_lock) {
-    if (t_event.mouseButton.button == sf::Mouse::Left) {
-      m_map->goTo(sf::Mouse::getPosition());
-      m_mouse_lock = true;
-    }
-  } else if (t_event.type == sf::Event::MouseButtonReleased && m_mouse_lock) {
-    m_mouse_lock = false;
+void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
+  if (t_input->isActionJustPressed(InputActions::A)) {
+    auto mouse_pos = t_input->getMousePosition();
+    LOG_TRACE("YAY! {},{} i: {}", mouse_pos.x, mouse_pos.y, t_input->getBitmask().to_string());
   }
 }
 

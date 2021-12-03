@@ -2,8 +2,11 @@
 
 #include <string>
 
+#include "Engine/Input.hpp"
 #include "Engine/Application.hpp"
 #include "States/TestState.hpp"
+
+#include "InputActions.hpp"
 
 class ComputerGame : public Engine::Application {
   public:
@@ -19,6 +22,7 @@ class ComputerGame : public Engine::Application {
     ComputerGame(void) :
       Engine::Application("assets/manifests/tilesets.manifest", "assets/manifests/textures.manifest") {};
 
-    void createInitialState(void) override;
+    void init(void) override;
 
+    void createInitialState(void) override;
 };

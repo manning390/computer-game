@@ -1,6 +1,21 @@
 #include "Input.hpp"
+#include "SFML/Window/Mouse.hpp"
 
-Engine::Input::Input(std::vector<ActionBinding> t_action_bindings) : m_action_bindings(t_action_bindings) {};
+Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, uint t_binding) {
+  id = t_id;
+  event_types = std::make_pair(t_event_type, Engine::EventType::Unknown);
+  bindings = std::make_pair(t_binding, sf::Keyboard::Unknown);
+}
+
+Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type_1, uint t_binding_1,
+                                                Engine::EventType t_event_type_2, uint t_binding_2) {
+  id = t_id;
+  event_types = std::make_pair(t_event_type_1, t_event_type_2);
+  bindings = std::make_pair(t_binding_1, t_binding_2);
+}
+
+Engine::Input::Input(std::vector<ActionBinding> t_action_bindings, std::shared_ptr<Engine::Window> t_window)
+  : m_action_bindings(t_action_bindings), m_window(t_window) {};
 
 void Engine::Input::update() {
   m_last_frame_keys.setMask(m_current_frame_keys);
@@ -12,7 +27,7 @@ void Engine::Input::update() {
 
 bool Engine::Input::isActionBindingPressed(Engine::ActionBinding t_action_binding) {
   return isBindingPressed(t_action_binding.event_types.first, t_action_binding.bindings.first) ||
-    (t_action_binding.bindings.second > -1 && isBindingPressed(t_action_binding.event_types.second, t_action_binding.bindings.second));
+    (t_action_binding.bindings.second > 0 && isBindingPressed(t_action_binding.event_types.second, t_action_binding.bindings.second));
 }
 
 bool Engine::Input::isBindingPressed(Engine::EventType t_type, uint t_keycode) {
@@ -24,6 +39,14 @@ bool Engine::Input::isBindingPressed(Engine::EventType t_type, uint t_keycode) {
     default:
       return false;
   }
+}
+
+sf::Vector2i Engine::Input::getMousePosition() {
+  return sf::Mouse::getPosition(*m_window->getNativeWindow());
+}
+
+sf::Vector2i Engine::Input::getGlobalMousePosition() {
+  return sf::Mouse::getPosition();
 }
 
 // Is the action held down
@@ -60,4 +83,8 @@ Engine::ActionBinding Engine::Input::getActionBinding(uint t_action) {
 
 void Engine::Input::setActionBinding(ActionBinding t_action_binding) {
   m_action_bindings[t_action_binding.id] = t_action_binding;
+}
+
+Engine::Bitmask Engine::Input::getBitmask() {
+  return m_current_frame_keys;
 }

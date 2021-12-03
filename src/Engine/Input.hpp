@@ -5,22 +5,28 @@
 
 #include "Constant.hpp"
 #include "Bitmask.hpp"
+#include "Window.hpp"
 
 namespace Engine {
   enum class EventType {
-    Keyboard = 0,
-    Mouse = 1
+    Unknown  = -1,
+    Keyboard =  0,
+    Mouse    =  1,
   };
 
-  struct ActionBinding {
-    uint id;
-    std::pair<EventType, EventType> event_types;
-    std::pair<uint, uint> bindings;
+  class ActionBinding {
+    public:
+      ActionBinding(uint t_id, EventType t_event_type,   uint t_binding);
+      ActionBinding(uint t_id, EventType t_event_type_1, uint t_binding_1,
+                               EventType t_event_type_2, uint t_binding_2);
+      uint id; // Action's id, must match vector index
+      std::pair<EventType, EventType> event_types;
+      std::pair<uint, uint> bindings;
   };
 
   class Input {
     public:
-      Input(std::vector<ActionBinding> t_action_bindings);
+      Input(std::vector<ActionBinding> t_action_bindings, std::shared_ptr<Engine::Window> t_window);
 
       bool isActionPressed(uint t_action);
       bool isActionJustPressed(uint t_action);
@@ -34,7 +40,13 @@ namespace Engine {
 
       void update();
 
+      sf::Vector2i getMousePosition();
+      sf::Vector2i getGlobalMousePosition();
+
+      Engine::Bitmask getBitmask();
+
     protected:
+      std::shared_ptr<Engine::Window> m_window;
       Engine::Bitmask m_current_frame_keys;
       Engine::Bitmask m_last_frame_keys;
       std::vector<ActionBinding> m_action_bindings;
