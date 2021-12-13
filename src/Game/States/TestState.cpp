@@ -4,7 +4,7 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   LOG_TRACE("TestState::TestState()");
 
   m_map = std::make_shared<Engine::Map>(ComputerGame::instance(), std::make_shared<Maps::TestMap>());
-  m_map->goToTile(49, 49);
+  // m_map->goToTile(49, 49);
 
   std::shared_ptr<Engine::Tileset> monsters_tileset = ComputerGame::instance().getTileset("monsters");
   bob = sf::Sprite(
@@ -31,8 +31,10 @@ void TestState::render(std::shared_ptr<Engine::Window> t_window) {
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   if (t_input->isActionJustPressed(InputActions::A)) {
-    auto mouse_pos = t_input->getMousePosition();
-    LOG_TRACE("YAY! {},{} i: {}", mouse_pos.x, mouse_pos.y, t_input->getBitmask().to_string());
+    auto pos = t_input->getMousePosition();
+    LOG_TRACE("Mouse Position at click {}, {}", pos.x, pos.y);
+    m_map->goTo(pos);
+    std::cout << std::endl;
   }
 }
 

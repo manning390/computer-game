@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "SFML/System/Vector2.hpp"
 
 Engine::Window::Window() : Window(1024, 768, "Main Window") {}
 
@@ -144,4 +145,20 @@ sf::Vector2i Engine::Window::getScreenSize() {
   return sf::Vector2i(m_window_width, m_window_height);
 }
 
+sf::View Engine::Window::getView() const {
+  return m_window->getView();
+}
+
+// void Engine::Window::move(float t_x, float t_y) {
+  // auto view = getView();
+  // view.move(t_x, t_y);
+  // m_window->setView(view);
+// };
+
+void Engine::Window::move(sf::Vector2i t_v) {
+  LOG_TRACE("Engine::Window::move(sf::Vector2i({},{}))", t_v.x, t_v.y);
+  auto view = getView();
+  view.move(t_v.x * 1.0, t_v.y * 1.0);
+  m_window->setView(view);
+};
 

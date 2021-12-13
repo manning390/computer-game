@@ -1,8 +1,9 @@
 #include "Map.hpp"
-#include "SFML/System/Vector2.hpp"
 
-Engine::Map::Map(AssetProvider& t_asset_provider, std::shared_ptr<Engine::Atlas> t_atlas) {
+Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
   LOG_TRACE("Engine::Map::Map()");
+
+  m_window = t_app.m_window;
   m_atlas = t_atlas;
 
   m_layer = t_atlas->layers[0];
@@ -17,21 +18,23 @@ Engine::Map::Map(AssetProvider& t_asset_provider, std::shared_ptr<Engine::Atlas>
   // Map size in pixels
   m_width_pixel = m_width * m_tile_width;
   m_height_pixel = m_height * m_tile_height;
+  // Set map offset
+  m_x = 0.0;
+  m_y = 0.0;
 
-  // This isn't centering the map
-  m_x = 0;
-  m_y = 0;
-  m_cam_x = 0;
-  m_cam_y = 0;
+  auto view = m_window->getView();
+  m_cam = (sf::Vector2i)view.getCenter();
+  LOG_TRACE("screen size {},{}", view.getSize().x, view.getSize().y);
+  LOG_TRACE("inital cam {},{}", m_cam.x, m_cam.y);
 
   // Get the blocking tile by searching for the collision tileset
   for (auto tileset_iter = t_atlas->tilesets.begin(); tileset_iter != t_atlas->tilesets.end(); tileset_iter++) {
-    auto tileset = t_asset_provider.getTileset(tileset_iter->second);
+    auto tileset = t_app.getTileset(tileset_iter->second);
 
     uint tile_id_iter = tileset_iter->first;
     for (auto uv_iter = tileset->uvs.begin(); uv_iter < tileset->uvs.end(); uv_iter++, ++tile_id_iter) {
       m_uvs[tile_id_iter] = *uv_iter;
-      m_textures[tile_id_iter] = t_asset_provider.getTexture(tileset->texture_src);
+      m_textures[tile_id_iter] = t_app.getTexture(tileset->texture_src);
     }
 
     if (tileset_iter->second == "collision") {
@@ -47,8 +50,8 @@ sf::Vector2i Engine::Map::pixelToTile(float t_x, float t_y) {
   float y = std::clamp<float>(t_y, m_y, m_y + m_height_pixel - 1);
 
   // Map from the bounded point to a tile
-  const int tileX = (x - m_x) / m_tile_width;
-  const int tileY = (y - m_y) / m_tile_height;
+  const int tileX = x / m_tile_width;
+  const int tileY = y / m_tile_height;
 
   return sf::Vector2i(tileX, tileY);
 }
@@ -57,25 +60,24 @@ sf::Vector2f Engine::Map::tileToPixel(uint t_x, uint t_y) {
   const int x_tile = std::clamp<uint>(t_x, 0, m_width);
   const int y_tile = std::clamp<uint>(t_y, 0, m_height);
 
-  return sf::Vector2f((x_tile * m_tile_width) + m_x, (y_tile * m_tile_height) + m_y);
+  return sf::Vector2f(m_x + (x_tile * m_tile_width), m_y + (y_tile * m_tile_height));
 }
 
 void Engine::Map::setPosition(float t_x, float t_y) {
+  // LOG_TRACE("Engine::Map::setPosition({},{})", t_x, t_y);
   m_x = t_x;
   m_y = t_y;
 }
 
-void Engine::Map::goTo(sf::Vector2i t_pos) {
-  goTo(t_pos.x, t_pos.y);
+void Engine::Map::goTo(sf::Vector2i t_v) {
+  LOG_TRACE("Engine::Map::goTo(sf::Vector2i({},{}))", t_v.x, t_v.y);
+  LOG_TRACE("m_cam {},{}", m_cam.x, m_cam.y);
+  m_window->move(t_v - m_cam);
+  m_cam = t_v;
 }
 
 void Engine::Map::goTo(int t_x, int t_y) {
-  m_cam_x = t_x + Engine::NativeWidth / 2;
-  m_cam_y = t_y + Engine::NativeHeight / 2;
-}
-
-sf::Vector2u Engine::Map::getSize(void) {
-  return sf::Vector2u(m_width_pixel, m_height_pixel);
+  goTo(sf::Vector2i(t_x, t_y));
 }
 
 void Engine::Map::goToTile(uint t_x, uint t_y) {
@@ -85,8 +87,12 @@ void Engine::Map::goToTile(uint t_x, uint t_y) {
   );
 }
 
-uint Engine::Map::getTile(uint t_x, uint t_y) {
-  return m_tiles[t_x + (t_y * m_width)];
+sf::Vector2u Engine::Map::getSize(void) {
+  return sf::Vector2u(m_width_pixel, m_height_pixel);
+}
+
+uint Engine::Map::getTileIndex(uint t_tx, uint t_ty) {
+  return m_tiles[t_tx + (t_ty * m_width)];
 }
 
 void Engine::Map::render(std::shared_ptr<Engine::Window> t_window) {
@@ -94,7 +100,7 @@ void Engine::Map::render(std::shared_ptr<Engine::Window> t_window) {
   // Render a black background that's the size of the map, it doesn't move lets us see the edge of the map via camera
   sf::RectangleShape map_bg(sf::Vector2f(m_width_pixel, m_height_pixel));
   map_bg.setFillColor(sf::Color::Black);
-  map_bg.setPosition(m_x, m_y);
+  map_bg.setPosition(0, 0);
   t_window->draw(map_bg);
 
   renderLayer(t_window, m_layer);
@@ -102,32 +108,23 @@ void Engine::Map::render(std::shared_ptr<Engine::Window> t_window) {
 
 void Engine::Map::renderLayer(std::shared_ptr<Engine::Window> t_window, Engine::Layer t_layer) {
   // LOG_TRACE("Engine::Map::renderLayer()");
-  auto screenSize = t_window->getScreenSize();
-  auto top_left_coord = pixelToTile(
-      m_cam_x - (screenSize.x / 2.0),
-      m_cam_y - (screenSize.y / 2.0));
-  auto bottom_right_coord  = pixelToTile(
-      m_cam_x + (screenSize.x / 2.0),
-      m_cam_y + (screenSize.y / 2.0));
-
   std::shared_ptr<sf::Texture> cached_texture = nullptr;
-  for (uint k = 0, j = top_left_coord.y, y_mx = bottom_right_coord.y + 1; j < y_mx; ++j, ++k) {
-    for (uint n = 0, i = top_left_coord.x, x_mx = bottom_right_coord.x; i <  x_mx + 1; ++i, ++n) {
-      uint tile = getTile(i, j);
-      if (tile < 1) continue; // We don't render 0
+  uint i = 0;
+  for (auto tile : m_tiles) {
+    if (tile < 1) continue; // We don't render 0
 
-      // Don't change the texture of the sprite unless we need to
-      if (m_textures[tile] != cached_texture) {
-        m_sprite.setTexture(*m_textures[tile]);
-        cached_texture = m_textures[tile];
-      }
-      m_sprite.setTextureRect(m_uvs[tile]);
-      m_sprite.setPosition(
-        m_x + (k * m_tile_width),
-        m_y + (n * m_tile_height)
-      );
+    int k = i % m_width;
+    int n = i / m_height;
 
-      t_window->draw(m_sprite);
+    // Don't change the texture of the sprite unless we need to
+    if (m_textures[tile] != cached_texture) {
+      m_sprite.setTexture(*m_textures[tile]);
+      cached_texture = m_textures[tile];
     }
+    m_sprite.setTextureRect(m_uvs[tile]);
+    m_sprite.setPosition(m_x + (k * m_tile_width), m_y + (n * m_tile_height));
+
+    t_window->draw(m_sprite);
+    ++i;
   }
 }

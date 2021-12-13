@@ -10,8 +10,6 @@
 
 class ComputerGame : public Engine::Application {
   public:
-    ~ComputerGame(void) override = default;
-
     /**
     * @brief Gets the instance of the application, if it doesn't exist instanciates it
     *

@@ -15,16 +15,15 @@
 #include "NoCopy.hpp"
 #include "NoMove.hpp"
 
-#include "Engine/AssetProvider.hpp"
-#include "Engine/Atlas.hpp"
-#include "Engine/Input.hpp"
-#include "Engine/Window.hpp"
-#include "Engine/StateStack.hpp"
+#include "Atlas.hpp"
+#include "Input.hpp"
+#include "Window.hpp"
+#include "StateStack.hpp"
 
 namespace Engine {
-  class Application : public Traits::NoCopy, public Traits::NoMove, public Engine::AssetProvider {
+  class Application : public Traits::NoCopy, public Traits::NoMove {
     public:
-      ~Application(void) override = default;
+      ~Application(void) = default;
 
       /**
       * @brief Hashmap of all the textures in the game
@@ -47,8 +46,8 @@ namespace Engine {
       */
       void quit(void);
 
-      std::shared_ptr<Engine::Tileset> getTileset(std::string t_key) override;
-      std::shared_ptr<sf::Texture> getTexture(std::string t_key) override;
+      std::shared_ptr<Engine::Tileset> getTileset(std::string t_key);
+      std::shared_ptr<sf::Texture> getTexture(std::string t_key);
 
       /**
       * @brief Associated window
@@ -101,7 +100,7 @@ namespace Engine {
       void loop();
 
       /**
-      * @brief Load allt he tilesets and store them in a hasmap
+      * @brief Load all the tilesets and store them in a hasmap
       *
       */
       void loadTilesets();

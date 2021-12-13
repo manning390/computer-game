@@ -4,7 +4,7 @@
 
 /**
  * It's an enum, I swear. It's just also a uint.
- *  It's fine.
+ * It's fine.
  *
  * We're doing this in the first place to avoid converting to uints
  * everytime we make a call to the input class.

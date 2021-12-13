@@ -38,7 +38,7 @@ namespace Engine {
   class Atlas {
     public:
       Atlas(const std::string t_file_path);
-      // Atlas(Engine::AssetProvider& t_asset_provider, std::string t_manifest_key);
+      // Atlas(Engine::Application& t_application, std::string t_manifest_key);
 
       std::string id;
       std::string name;

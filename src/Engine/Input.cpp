@@ -43,6 +43,7 @@ bool Engine::Input::isBindingPressed(Engine::EventType t_type, uint t_keycode) {
 
 sf::Vector2i Engine::Input::getMousePosition() {
   return sf::Mouse::getPosition(*m_window->getNativeWindow());
+  // return (sf::Vector2i)m_window->getNativeWindow()->mapPixelToCoords(sf::Mouse::getPosition(*m_window->getNativeWindow()));
 }
 
 sf::Vector2i Engine::Input::getGlobalMousePosition() {

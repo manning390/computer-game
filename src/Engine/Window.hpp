@@ -81,6 +81,11 @@ namespace Engine {
 
       sf::Vector2i getScreenSize();
 
+      sf::View getView() const;
+
+      // void move(float t_x, float t_y);
+      void move(sf::Vector2i t_v);
+
     private:
       /**
        * @brief Window object

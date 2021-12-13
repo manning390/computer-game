@@ -33,7 +33,6 @@ class TestState : public Engine::IState {
     void exit(void) override;
 
   protected:
-    bool m_mouse_lock = false;
     std::shared_ptr<Engine::Map> m_map;
     sf::Sprite bob;
     sf::Sprite jim;

@@ -8,12 +8,6 @@ target_include_directories(testVendors PUBLIC "${SPDLOG_DIR}/include")
 target_link_libraries(testVendors ImGui-SFML::ImGui-SFML)
 # End TestVendors
 
-# MapEditor
-add_executable(mapEditor mapEditor.cpp)
-target_include_directories(testVendors PUBLIC "${SPDLOG_DIR}/include")
-target_link_libraries(mapEditor traits engine game ImGui-SFML::ImGui-SFML)
-# End MapEditor
-
 # ComputerGame
 add_executable(${PROJECT_NAME} main.cpp)
 target_compile_options(${PROJECT_NAME} PRIVATE ${flags})
