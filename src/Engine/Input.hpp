@@ -40,8 +40,8 @@ namespace Engine {
 
       void update();
 
-      sf::Vector2i getMousePosition();
-      sf::Vector2i getGlobalMousePosition();
+      sf::Vector2i getMousePosition(); // World
+      sf::Vector2i getViewMousePosition(); // View
 
       Engine::Bitmask getBitmask();
 

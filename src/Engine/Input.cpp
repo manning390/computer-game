@@ -42,12 +42,15 @@ bool Engine::Input::isBindingPressed(Engine::EventType t_type, uint t_keycode) {
 }
 
 sf::Vector2i Engine::Input::getMousePosition() {
-  return sf::Mouse::getPosition(*m_window->getNativeWindow());
-  // return (sf::Vector2i)m_window->getNativeWindow()->mapPixelToCoords(sf::Mouse::getPosition(*m_window->getNativeWindow()));
+  auto window = m_window->getNativeWindow();
+  auto coord  = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+  auto view   = window->getView().getSize();
+  // return sf::Vector2i(coord.x - (view.x / 2.0), coord.y - (view.y / 2.0));
+  return sf::Vector2i(coord.x, coord.y);
 }
 
-sf::Vector2i Engine::Input::getGlobalMousePosition() {
-  return sf::Mouse::getPosition();
+sf::Vector2i Engine::Input::getViewMousePosition() {
+  return sf::Mouse::getPosition(*m_window->getNativeWindow());
 }
 
 // Is the action held down

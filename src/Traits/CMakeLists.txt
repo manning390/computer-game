@@ -12,4 +12,4 @@ target_include_directories(traits PUBLIC
   "${SPDLOG_DIR}/include/"
 )
 
-target_link_libraries(traits ImGui-SFML::ImGui-SFML)
+target_link_libraries(traits ${SFML_LIBRARIES})

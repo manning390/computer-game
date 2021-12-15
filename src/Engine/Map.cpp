@@ -1,4 +1,5 @@
 #include "Map.hpp"
+#include "SFML/System/Vector2.hpp"
 
 Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
   LOG_TRACE("Engine::Map::Map()");
@@ -24,8 +25,6 @@ Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
 
   auto view = m_window->getView();
   m_cam = (sf::Vector2i)view.getCenter();
-  LOG_TRACE("screen size {},{}", view.getSize().x, view.getSize().y);
-  LOG_TRACE("inital cam {},{}", m_cam.x, m_cam.y);
 
   // Get the blocking tile by searching for the collision tileset
   for (auto tileset_iter = t_atlas->tilesets.begin(); tileset_iter != t_atlas->tilesets.end(); tileset_iter++) {
@@ -71,7 +70,7 @@ void Engine::Map::setPosition(float t_x, float t_y) {
 
 void Engine::Map::goTo(sf::Vector2i t_v) {
   LOG_TRACE("Engine::Map::goTo(sf::Vector2i({},{}))", t_v.x, t_v.y);
-  LOG_TRACE("m_cam {},{}", m_cam.x, m_cam.y);
+  LOG_DEBUG("m_cam {},{}", m_cam.x, m_cam.y);
   m_window->move(t_v - m_cam);
   m_cam = t_v;
 }

@@ -3,20 +3,21 @@
 TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   LOG_TRACE("TestState::TestState()");
 
-  m_map = std::make_shared<Engine::Map>(ComputerGame::instance(), std::make_shared<Maps::TestMap>());
-  // m_map->goToTile(49, 49);
+  auto app = &ComputerGame::instance();
+  m_map = std::make_shared<Engine::Map>(*app, std::make_shared<Maps::TestMap>());
 
-  std::shared_ptr<Engine::Tileset> monsters_tileset = ComputerGame::instance().getTileset("monsters");
+  std::shared_ptr<Engine::Tileset> monsters_tileset = app->getTileset("monsters");
   bob = sf::Sprite(
-    *ComputerGame::instance().getTexture("monsters"),
+    *(app->getTexture("monsters")),
     monsters_tileset->uvs[1]
   );
   jim = sf::Sprite(
-    *ComputerGame::instance().getTexture("monsters"),
+    *(app->getTexture("monsters")),
     monsters_tileset->uvs[1]
   );
   bob.setPosition(m_map->tileToPixel(0, 0));
-  jim.setPosition(m_map->tileToPixel(99, 99));
+  // jim.setPosition(m_map->tileToPixel(99, 99));
+  jim.setPosition(app->m_window->getView().getCenter());
 }
 
 bool TestState::update(float t_dt) {
@@ -31,10 +32,7 @@ void TestState::render(std::shared_ptr<Engine::Window> t_window) {
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   if (t_input->isActionJustPressed(InputActions::A)) {
-    auto pos = t_input->getMousePosition();
-    LOG_TRACE("Mouse Position at click {}, {}", pos.x, pos.y);
-    m_map->goTo(pos);
-    std::cout << std::endl;
+    m_map->goTo(t_input->getMousePosition());
   }
 }
 

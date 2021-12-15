@@ -4,9 +4,9 @@ project(ComputerGame
   LANGUAGES CXX
 )
 
-SET(CMAKE_CXX_STANDARD 17)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Flags
 list(APPEND flags "-fPIC" "-Wall")
@@ -17,7 +17,8 @@ endif()
 message("C++ compiler flags: ${CMAKE_CXX_FLAGS}")
 
 # Libraries
-SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
+set(SFML_LIBRARIES "sfml-graphics" "sfml-window") # Helper variable for linking
+set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
 
 add_subdirectory(vendor)
 add_subdirectory(src)

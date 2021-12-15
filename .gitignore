@@ -1,8 +1,6 @@
 assets/textures/*
 assets/tiled
 
-imgui.ini
-
 bin/*
 build/*
 out/build/*

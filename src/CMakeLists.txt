@@ -4,14 +4,14 @@ add_subdirectory(Game)
 
 # TestVendors
 add_executable(testVendors testVendors.cpp)
-target_include_directories(testVendors PUBLIC "${SPDLOG_DIR}/include")
-target_link_libraries(testVendors ImGui-SFML::ImGui-SFML)
+target_include_directories(testVendors PRIVATE "${SPDLOG_DIR}/include")
+target_link_libraries(testVendors PRIVATE ${SFML_LIBRARIES})
 # End TestVendors
 
 # ComputerGame
 add_executable(${PROJECT_NAME} main.cpp)
 target_compile_options(${PROJECT_NAME} PRIVATE ${flags})
-target_link_libraries(${PROJECT_NAME} traits engine game ImGui-SFML::ImGui-SFML)
+target_link_libraries(${PROJECT_NAME} traits engine game ${SFML_LIBRARIES})
 # End ComputerGame
 
-include(Install.cmake)
+# include(Install.cmake)

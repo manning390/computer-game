@@ -17,8 +17,6 @@ message(STATUS "Fetching third party libraries")
 
 SET(SPDLOG_VERSION 1.8.2)
 set(SFML_VERSION 2.5.1)
-set(IMGUI_VERSION 1.68)
-set(IMGUI_SFML_VERSION 2.0)
 
 # It's nice to get stripped-down release zips instead of cloning
 # a repo and checking out a tag
@@ -28,30 +26,12 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-  SFML
+  sfml
   URL "https://github.com/SFML/SFML/archive/${SFML_VERSION}.zip"
-)
-
-FetchContent_Declare(
-  imgui
-  URL "https://github.com/ocornut/imgui/archive/v${IMGUI_VERSION}.zip"
-)
-
-# Or by tag...
-FetchContent_Declare(
-  imgui-sfml
-  GIT_REPOSITORY https://github.com/eliasdaler/imgui-sfml.git
-  GIT_TAG        develop
-  # GIT_COMMIT 5f54b69b6aee18db846c81633f86f78c2586dded
-  # ^ or like this - sometimes it's better because FetchContent won't look
-  # into remote to see if branch head was updated or not - good for stable
-  # tags like 'vX.X' corresponding to releases
 )
 
 add_subdirectory(spdlog)
 add_subdirectory(sfml)
-add_subdirectory(imgui)
-add_subdirectory(imgui-sfml)
 
 #======================================
 message(STATUS "Fetching thirdparty libraries done")

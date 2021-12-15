@@ -11,6 +11,7 @@ Engine::Window::Window(unsigned int t_window_width, unsigned int t_window_height
   m_fullscreen = false;
   setFps(t_fps);
   m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(m_window_width, m_window_height), m_window_title, sf::Style::Default);
+  m_window->setView(calcView(m_window_width, m_window_height));
 
   if (m_window == nullptr) {
    LOG_ERROR("Cannot create SFML Window. Make sure DISPLAY=:0 environment variable is set.");
@@ -134,7 +135,8 @@ sf::View Engine::Window::calcView(const float t_window_width, const float t_wind
 
 void Engine::Window::reset(void) const {
   m_window->setActive(true);
-  m_window->clear(sf::Color(51, 51, 51));
+  // m_window->clear(sf::Color(51, 51, 51)); // Grey background
+  m_window->clear(sf::Color(0, 0, 0)); // Black background
 }
 
 void Engine::Window::display(void) const {
@@ -158,7 +160,7 @@ sf::View Engine::Window::getView() const {
 void Engine::Window::move(sf::Vector2i t_v) {
   LOG_TRACE("Engine::Window::move(sf::Vector2i({},{}))", t_v.x, t_v.y);
   auto view = getView();
-  view.move(t_v.x * 1.0, t_v.y * 1.0);
+  view.move((sf::Vector2f)t_v);
   m_window->setView(view);
 };
 
