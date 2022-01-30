@@ -34,6 +34,20 @@ void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   if (t_input->isActionJustPressed(InputActions::A)) {
     m_map->goTo(t_input->getMousePosition());
   }
+  auto pos = bob.getPosition();
+  if (t_input->isActionJustPressed(InputActions::LEFT)) {
+    bob.setPosition(pos + sf::Vector2f(-5, 0));
+  }
+  if (t_input->isActionJustPressed(InputActions::RIGHT)) {
+    bob.setPosition(pos + sf::Vector2f(5, 0));
+  }
+  if (t_input->isActionJustPressed(InputActions::UP)) {
+    bob.setPosition(pos + sf::Vector2f(0, -5));
+  }
+  if (t_input->isActionJustPressed(InputActions::DOWN)) {
+    bob.setPosition(pos + sf::Vector2f(0, 5));
+  }
+  // LOG_DEBUG("new pos {},{}", pos.x, pos.y);
 }
 
 void TestState::enter(void) {
