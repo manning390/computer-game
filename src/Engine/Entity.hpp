@@ -4,33 +4,37 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Engine/Map.hpp"
+
+#include "EntityDef.hpp"
 #include "Application.hpp"
 
 namespace Engine {
-  /**
-   * @brief Used to create actual entity classes
-   *
-   */
-  struct EntityDef {
-    std::string texture; // manifest key
-    uint width;
-    uint height;
-    uint tile_x;
-    uint tile_y;
-    uint start_frame = 0;
-  };
-
   class Entity {
     public:
       Entity(Engine::Application& t_app, EntityDef &t_entity_def);
 
-    protected:
+      void update(float t_delta);
+
+      void render(std::shared_ptr<Engine::Window> t_window);
+
+      void setFrame(uint t_frame);
+
+      // Not fully complete, just temp
+      void setTilePos(uint x, uint y, uint layer, std::shared_ptr<Engine::Map> t_map);
+
       sf::Sprite m_sprite;
-      sf::Texture m_texture;
-      uint m_width;
-      uint m_height;
       uint m_tile_x;
       uint m_tile_y;
+      uint m_layer = 0;
+      uint m_x;
+      uint m_y;
+
+    protected:
+      // sf::Texture m_texture;
+      std::shared_ptr<Engine::Tileset> m_tileset;
+      uint m_width;
+      uint m_height;
       uint m_start_frame = 0;
   };
 }

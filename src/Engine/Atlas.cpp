@@ -9,7 +9,7 @@ Engine::Tileset::Tileset(const std::string t_file_path) {
     iss >> type;
 
     if (type == "id") iss >> id;
-    else if (type == "texture") iss >> texture_src;
+    else if (type == "texture") iss >> texture;
     else if (type == "data") iss >> columns >> rows >> tile_height >> tile_width >> margin_x >> margin_y >> spacing;
   }
 

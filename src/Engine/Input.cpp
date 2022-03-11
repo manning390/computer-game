@@ -1,14 +1,17 @@
 #include "Input.hpp"
+#include "Log.hpp"
 #include "SFML/Window/Mouse.hpp"
 
-Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, uint t_binding) {
+Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, int t_binding) {
+  LOG_DEBUG("Action Binding S id: {}, type: {}, binding: {}", t_id, t_event_type, t_binding);
   id = t_id;
   event_types = std::make_pair(t_event_type, Engine::EventType::Unknown);
   bindings = std::make_pair(t_binding, sf::Keyboard::Unknown);
 }
 
-Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type_1, uint t_binding_1,
-                                                Engine::EventType t_event_type_2, uint t_binding_2) {
+Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type_1, int t_binding_1,
+                                                Engine::EventType t_event_type_2, int t_binding_2) {
+  LOG_DEBUG("Action Binding D id: {}, type: {}, binding: {}, type: {}, binding: {}", t_id, t_event_type_1, t_binding_1, t_event_type_2, t_binding_2);
   id = t_id;
   event_types = std::make_pair(t_event_type_1, t_event_type_2);
   bindings = std::make_pair(t_binding_1, t_binding_2);
@@ -27,10 +30,10 @@ void Engine::Input::update() {
 
 bool Engine::Input::isActionBindingPressed(Engine::ActionBinding t_action_binding) {
   return isBindingPressed(t_action_binding.event_types.first, t_action_binding.bindings.first) ||
-    (t_action_binding.bindings.second > 0 && isBindingPressed(t_action_binding.event_types.second, t_action_binding.bindings.second));
+    (t_action_binding.bindings.second > -1 && isBindingPressed(t_action_binding.event_types.second, t_action_binding.bindings.second));
 }
 
-bool Engine::Input::isBindingPressed(Engine::EventType t_type, uint t_keycode) {
+bool Engine::Input::isBindingPressed(Engine::EventType t_type, int t_keycode) {
   switch(t_type) {
     case Engine::EventType::Keyboard:
       return sf::Keyboard::isKeyPressed((sf::Keyboard::Key) t_keycode);

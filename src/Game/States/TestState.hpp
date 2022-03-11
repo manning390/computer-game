@@ -9,13 +9,18 @@
 #include "Helper.hpp"
 
 #include "Engine/StateStack.hpp"
+#include "Engine/StateMachine.hpp"
 #include "Engine/IState.hpp"
 #include "Engine/Window.hpp"
 #include "Engine/Input.hpp"
+#include "Engine/Entity.hpp"
 #include "Engine/Map.hpp"
 
 #include "Game/ComputerGame.hpp"
+#include "Game/Character.hpp"
 #include "Game/Maps/TestMap.hpp"
+#include "Game/States/WaitState.hpp"
+#include "Game/States/MoveState.hpp"
 
 class TestState : public Engine::IState {
   public:
@@ -32,8 +37,11 @@ class TestState : public Engine::IState {
 
     void exit(void) override;
 
+    void teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_ptr<Engine::Map> t_map);
+
   protected:
     std::shared_ptr<Engine::Map> m_map;
-    sf::Sprite bob;
-    sf::Sprite jim;
+    std::shared_ptr<WaitState> m_wait_state;
+    std::shared_ptr<MoveState> m_move_state;
+    std::shared_ptr<Character> m_bob;
 };

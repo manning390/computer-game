@@ -17,6 +17,22 @@ Engine::Tween::Tween(
   m_is_finished = false;
 }
 
+Engine::Tween::Tween(
+    float t_start,
+    float t_finish,
+    float t_total_duration
+) :
+  // m_func_is_4(true),
+  m_func_4(::Tween::Linear),
+  m_start(t_start),
+  m_total_duration(t_total_duration)
+{
+  m_distance = t_finish - t_start;
+  m_current = t_start;
+  m_time_passed = 0;
+  m_is_finished = false;
+}
+
 // Engine::Tween::Tween(
     // float t_start,
     // float t_finish,

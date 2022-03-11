@@ -33,7 +33,7 @@ Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
     uint tile_id_iter = tileset_iter->first;
     for (auto uv_iter = tileset->uvs.begin(); uv_iter < tileset->uvs.end(); uv_iter++, ++tile_id_iter) {
       m_uvs[tile_id_iter] = *uv_iter;
-      m_textures[tile_id_iter] = t_app.getTexture(tileset->texture_src);
+      m_textures[tile_id_iter] = t_app.getTexture(tileset->texture);
     }
 
     if (tileset_iter->second == "collision") {

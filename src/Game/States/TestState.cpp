@@ -6,18 +6,29 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   auto app = &ComputerGame::instance();
   m_map = std::make_shared<Engine::Map>(*app, std::make_shared<Maps::TestMap>());
 
-  std::shared_ptr<Engine::Tileset> monsters_tileset = app->getTileset("monsters");
-  bob = sf::Sprite(
-    *(app->getTexture("monsters")),
-    monsters_tileset->uvs[1]
+  // std::unordered_map<std::string, std::shared_ptr<Engine::IState>> what = {{"what", m_wait_state}};
+
+  // Temporary
+  std::vector<Engine::EntityDef> entities{{"monsters", 0, 0, 0, 0, 0, 0}};
+  std::unordered_map<std::string, std::shared_ptr<Engine::IState>> character_states
+    = {
+      {"wait", m_wait_state},
+      {"move", m_move_state},
+    };
+
+  m_bob = std::make_shared<Character>(
+    // std::make_shared<Engine::Entity>(*app, entities[0]),
+    std::make_shared<Engine::Entity>(*app, entities[0]),
+    std::make_shared<Engine::StateMachine>(character_states)
   );
-  jim = sf::Sprite(
-    *(app->getTexture("monsters")),
-    monsters_tileset->uvs[1]
-  );
-  bob.setPosition(m_map->tileToPixel(0, 0));
-  // jim.setPosition(m_map->tileToPixel(99, 99));
-  jim.setPosition(app->m_window->getView().getCenter());
+  m_wait_state = std::make_shared<WaitState>(m_bob, m_map);
+  m_move_state = std::make_shared<MoveState>(m_bob, m_map);
+
+}
+
+void TestState::teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_ptr<Engine::Map> t_map) {
+  auto vec = t_map->tileToPixel(t_entity->m_tile_x, t_entity->m_tile_y);
+  t_entity->m_sprite.setPosition(vec.x, vec.y);
 }
 
 bool TestState::update(float t_dt) {
@@ -26,27 +37,25 @@ bool TestState::update(float t_dt) {
 
 void TestState::render(std::shared_ptr<Engine::Window> t_window) {
   m_map->render(t_window);
-  t_window->draw(bob);
-  t_window->draw(jim);
+  m_bob->m_entity->render(t_window);
 }
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
-  if (t_input->isActionJustPressed(InputActions::A)) {
-    m_map->goTo(t_input->getMousePosition());
-  }
-  auto pos = bob.getPosition();
-  if (t_input->isActionJustPressed(InputActions::LEFT)) {
-    bob.setPosition(pos + sf::Vector2f(-5, 0));
-  }
-  if (t_input->isActionJustPressed(InputActions::RIGHT)) {
-    bob.setPosition(pos + sf::Vector2f(5, 0));
-  }
-  if (t_input->isActionJustPressed(InputActions::UP)) {
-    bob.setPosition(pos + sf::Vector2f(0, -5));
-  }
-  if (t_input->isActionJustPressed(InputActions::DOWN)) {
-    bob.setPosition(pos + sf::Vector2f(0, 5));
-  }
+  // if (t_input->isActionJustPressed(InputActions::A)) {
+  // // LOG_DEBUG("new pos {},{}", pos.x, pos.y);
+    // m_map->goTo(t_input->getMousePosition());
+  // }
+  // if (t_input->isActionPressed(InputActions::LEFT)) {
+    // // bob->m_tile_x -= 1;
+  // } else if (t_input->isActionPressed(InputActions::RIGHT)) {
+    // // bob->m_tile_x += 1;
+  // }
+  // if (t_input->isActionPressed(InputActions::UP)) {
+    // // bob->m_tile_y -= 1;
+  // } else if (t_input->isActionPressed(InputActions::DOWN)) {
+    // // bob->m_tile_y += 1;
+  // }
+  // teleport(bob, m_map);
   // LOG_DEBUG("new pos {},{}", pos.x, pos.y);
 }
 

@@ -31,7 +31,7 @@ namespace Engine {
       uint margin_x;
       uint margin_y;
       uint spacing;
-      std::string texture_src;
+      std::string texture; // manifest key
       std::vector<sf::IntRect> uvs;
   };
 

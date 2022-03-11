@@ -16,12 +16,12 @@ namespace Engine {
 
   class ActionBinding {
     public:
-      ActionBinding(uint t_id, EventType t_event_type,   uint t_binding);
-      ActionBinding(uint t_id, EventType t_event_type_1, uint t_binding_1,
-                               EventType t_event_type_2, uint t_binding_2);
+      ActionBinding(uint t_id, EventType t_event_type,   int t_binding);
+      ActionBinding(uint t_id, EventType t_event_type_1, int t_binding_1,
+                               EventType t_event_type_2, int t_binding_2);
       uint id; // Action's id, must match vector index
       std::pair<EventType, EventType> event_types;
-      std::pair<uint, uint> bindings;
+      std::pair<int, int> bindings;
   };
 
   class Input {
@@ -52,6 +52,6 @@ namespace Engine {
       std::vector<ActionBinding> m_action_bindings;
 
       bool isActionBindingPressed(Engine::ActionBinding t_action_binding);
-      bool isBindingPressed(EventType t_event_type, uint t_binding);
+      bool isBindingPressed(EventType t_event_type, int t_binding);
   };
 }

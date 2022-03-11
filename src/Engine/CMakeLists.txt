@@ -4,6 +4,8 @@ add_library(engine
     Atlas.cpp
     AssetProvider.hpp
     Bitmask.cpp
+    EntityDef.hpp
+    Entity.cpp
     Input.cpp
     IState.hpp
     Map.cpp

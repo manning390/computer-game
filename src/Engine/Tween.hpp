@@ -8,6 +8,7 @@ namespace Engine {
   class Tween {
     public:
       Tween(float t_start, float t_finish, float t_total_duration, std::function<float(float, float, float, float)> t_func);
+      Tween(float t_start, float t_finish, float t_total_duration);
       // Tween(float t_start, float t_finish, float t_total_duration, std::function<float(float, float, float, [[maybe_unused]]float, [[maybe_unused]]float, float)> t_func);
       ~Tween(void) = default;
 

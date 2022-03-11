@@ -19,6 +19,7 @@
 #include "Input.hpp"
 #include "Window.hpp"
 #include "StateStack.hpp"
+#include "EntityDef.hpp"
 
 namespace Engine {
   class Application : public Traits::NoCopy, public Traits::NoMove {
@@ -32,6 +33,8 @@ namespace Engine {
       std::unordered_map<std::string, std::shared_ptr<sf::Texture>> m_textures;
 
       std::unordered_map<std::string, std::shared_ptr<Engine::Tileset>> m_tilesets;
+
+      std::unordered_map<std::string, std::shared_ptr<Engine::EntityDef>> m_entity_defs;
 
       void processArguments(int argc, const char **argv);
       /**
