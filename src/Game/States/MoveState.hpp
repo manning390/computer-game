@@ -21,11 +21,8 @@ struct MoveStateEnterParams {
 
 class MoveState : public Engine::IState {
   public:
-    MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map) :
-      m_character(t_char),
-      m_map(t_map),
-      m_entity(t_char->m_entity),
-      m_controller(t_char->m_controller) {};
+    MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map);
+    ~MoveState(void) override = default;
 
     std::shared_ptr<Character> m_character;
     std::shared_ptr<Engine::Map> m_map;
@@ -34,7 +31,7 @@ class MoveState : public Engine::IState {
 
     uint m_tile_width = 0;
     sf::Vector2i m_movement = {0, 0};
-    sf::Vector2f m_pixel_pos;
+    sf::Vector2f m_pixel_pos = {0, 0};
     float m_move_speed = 0.3;
 
     bool update(float t_dt) override;

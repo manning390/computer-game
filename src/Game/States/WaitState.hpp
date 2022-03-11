@@ -19,6 +19,7 @@ class WaitState : public Engine::IState {
       m_map(t_map),
       m_entity(t_char->m_entity),
       m_controller(t_char->m_controller) {};
+    ~WaitState(void) override = default;
 
     std::shared_ptr<Character> m_character;
     std::shared_ptr<Engine::Map> m_map;

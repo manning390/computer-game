@@ -1,5 +1,11 @@
 #include "MoveState.hpp"
 
+MoveState::MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map)
+  : m_character(t_char),
+    m_map(t_map),
+    m_entity(t_char->m_entity),
+    m_controller(t_char->m_controller) { };
+
 bool MoveState::update(float t_dt) {
   // m_tween->update(t_dt);
 
