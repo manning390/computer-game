@@ -11,14 +11,13 @@ namespace Engine {
       // StateMachine(std::unordered_map<std::string, std::function<std::shared_ptr<Engine::IState> (void)>> t_states);
       StateMachine(std::unordered_map<std::string, std::shared_ptr<Engine::IState>> t_states);
 
-      template<class T>
+      template<typename T>
       void change(std::string t_state_key, T t_enter_params);
-      // Overloading because sometimes we want to pass nothing? There's probably a better way to write this
-      // void change(std::string t_state_key);
+      void change(std::string t_state_key);
 
       void update(float t_dt);
-
       void render(std::shared_ptr<Engine::Window> t_window);
+      void handleInput(std::shared_ptr<Engine::Input> t_input);
 
     protected:
       /**

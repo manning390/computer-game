@@ -9,6 +9,7 @@
 
 #include "Game/States/EmptyState.hpp"
 #include "Game/Character.hpp"
+
 #include <SFML/System/Vector2.hpp>
 
 struct MoveStateEnterParams {
@@ -19,9 +20,13 @@ struct MoveStateEnterParams {
   int y;
 };
 
-class MoveState : public Engine::IState {
+class MoveState : public EmptyState {
   public:
-    MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map);
+    MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map)
+      : m_character(t_char),
+        m_map(t_map),
+        m_entity(t_char->m_entity),
+        m_controller(t_char->m_controller) { };
     ~MoveState(void) override = default;
 
     std::shared_ptr<Character> m_character;
@@ -35,11 +40,8 @@ class MoveState : public Engine::IState {
     float m_move_speed = 0.3;
 
     bool update(float t_dt) override;
-    void render(std::shared_ptr<Engine::Window>) override {};
-    void handleInput(std::shared_ptr<Engine::Input>) override {};
 
     void enter(MoveStateEnterParams t_data);
-    void enter() override {};
     void exit() override;
 
   protected:

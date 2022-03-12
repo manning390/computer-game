@@ -4,6 +4,7 @@ add_library(game
   Maps/TestMap.hpp
   States/EmptyState.hpp
   States/WaitState.hpp
+  States/MoveState.cpp
   States/TestState.cpp
 )
 

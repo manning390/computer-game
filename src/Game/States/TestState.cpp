@@ -32,6 +32,7 @@ void TestState::teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_p
 }
 
 bool TestState::update(float t_dt) {
+  m_bob->m_controller->update(t_dt);
   return true;
 }
 
@@ -41,20 +42,7 @@ void TestState::render(std::shared_ptr<Engine::Window> t_window) {
 }
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
-  // if (t_input->isActionJustPressed(InputActions::A)) {
-  // // LOG_DEBUG("new pos {},{}", pos.x, pos.y);
-    // m_map->goTo(t_input->getMousePosition());
-  // }
-  // if (t_input->isActionPressed(InputActions::LEFT)) {
-    // // bob->m_tile_x -= 1;
-  // } else if (t_input->isActionPressed(InputActions::RIGHT)) {
-    // // bob->m_tile_x += 1;
-  // }
-  // if (t_input->isActionPressed(InputActions::UP)) {
-    // // bob->m_tile_y -= 1;
-  // } else if (t_input->isActionPressed(InputActions::DOWN)) {
-    // // bob->m_tile_y += 1;
-  // }
+  m_bob->m_controller->handleInput(t_input);
   // teleport(bob, m_map);
   // LOG_DEBUG("new pos {},{}", pos.x, pos.y);
 }

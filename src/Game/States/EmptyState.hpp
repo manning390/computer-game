@@ -11,10 +11,12 @@
 
 class EmptyState : public Engine::IState {
   public:
-    EmptyState();
-    bool update() { return false; };
-    void render() {};
-    void handleInput() {};
+    EmptyState(void) = default;
+    ~EmptyState(void) override = default;
+
+    bool update(float) override { return true; };
+    void render(std::shared_ptr<Engine::Window>) override {};
+    void handleInput(std::shared_ptr<Engine::Input>) override {};
 
     void enter(void) override {};
     void exit(void) override {};

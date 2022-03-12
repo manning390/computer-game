@@ -10,6 +10,7 @@ add_library(engine
     IState.hpp
     Map.cpp
     StateStack.cpp
+    StateMachine.cpp
     Tween.cpp
     Util.hpp
     Window.cpp

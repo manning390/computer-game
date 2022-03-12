@@ -23,20 +23,24 @@ void Engine::StateMachine::change(std::string t_state_key, T t_enter_params) {
   m_current->enter(t_enter_params);
 }
 
-// void Engine::StateMachine::change(std::string t_state_key) {
-  // auto state = m_states.find(t_state_key);
-  // if (state == m_states.end()) {
-    // LOG_ERROR("{} is not a valid state", t_state_key);
-    // std::exit(1);
-  // }
+void Engine::StateMachine::change(std::string t_state_key) {
+  auto state = m_states.find(t_state_key);
+  if (state == m_states.end()) {
+    LOG_ERROR("{} is not a valid state", t_state_key);
+    std::exit(1);
+  }
 
-  // LOG_DEBUG("StateMachine: change -> {}", t_state_key);
-  // if (m_current != nullptr)
-    // m_current->exit();
-  // // m_current = (state->second)();
-  // m_current = state->second;
-  // m_current->enter();
-// }
+  LOG_DEBUG("StateMachine: change -> {}", t_state_key);
+  if (m_current != nullptr)
+    m_current->exit();
+  // m_current = (state->second)();
+  m_current = state->second;
+  m_current->enter();
+}
+
+void Engine::StateMachine::handleInput(std::shared_ptr<Engine::Input> t_input) {
+  m_current->handleInput(t_input);
+};
 
 void Engine::StateMachine::update(float t_dt) {
   m_current->update(t_dt);
