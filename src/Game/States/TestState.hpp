@@ -44,4 +44,4 @@ class TestState : public Engine::IState {
     std::shared_ptr<WaitState> m_wait_state;
     std::shared_ptr<MoveState> m_move_state;
     std::shared_ptr<Character> m_bob;
-};
+} ;

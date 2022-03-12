@@ -6,8 +6,8 @@
 #include "Engine/Map.hpp"
 #include "Engine/StateMachine.hpp"
 #include "Engine/Window.hpp"
+#include "Engine/EmptyState.hpp"
 
-#include "Game/States/EmptyState.hpp"
 #include "Game/Character.hpp"
 
 #include <SFML/System/Vector2.hpp>
@@ -20,7 +20,7 @@ struct MoveStateEnterParams {
   int y;
 };
 
-class MoveState : public EmptyState {
+class MoveState : public Engine::EmptyState {
   public:
     MoveState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map)
       : m_character(t_char),
@@ -41,7 +41,13 @@ class MoveState : public EmptyState {
 
     bool update(float t_dt) override;
 
-    void enter(MoveStateEnterParams t_data);
+
+    void enter(MoveStateEnterParams t_data) {
+      m_movement = {t_data.x, t_data.y};
+      m_pixel_pos = m_entity->m_sprite.getPosition();
+      m_tween = std::make_unique<Engine::Tween>(0, m_tile_width, m_move_speed, Tween::Linear);
+    }
+
     void exit() override;
 
   protected:

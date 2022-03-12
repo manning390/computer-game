@@ -37,6 +37,8 @@ namespace Engine {
        * @brief runs when the state is entered
        */
       virtual void enter(void) = 0;
+      template<typename T>
+      void enter(T) {}
 
       /**
        * @brief runs when the state is exited

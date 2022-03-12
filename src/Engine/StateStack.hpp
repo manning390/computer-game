@@ -5,6 +5,7 @@
 
 #include "Window.hpp"
 #include "Input.hpp"
+#include "IState.hpp"
 
 namespace Engine {
   class IState;

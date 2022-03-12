@@ -1,4 +1,3 @@
-#include "IState.hpp"
 #include "StateStack.hpp"
 
 void Engine::StateStack::push(std::shared_ptr<Engine::IState> t_state) {

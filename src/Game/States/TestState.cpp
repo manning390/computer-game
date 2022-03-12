@@ -6,23 +6,29 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   auto app = &ComputerGame::instance();
   m_map = std::make_shared<Engine::Map>(*app, std::make_shared<Maps::TestMap>());
 
-  // std::unordered_map<std::string, std::shared_ptr<Engine::IState>> what = {{"what", m_wait_state}};
-
-  // Temporary
+  // Temporary?
   std::vector<Engine::EntityDef> entities{{"monsters", 0, 0, 0, 0, 0, 0}};
-  std::unordered_map<std::string, std::shared_ptr<Engine::IState>> character_states
+  // std::function<std::shared_ptr<Engine::IState> (void)> wait_fn = [&](){return this->m_wait_state;};
+  // std::function<std::shared_ptr<Engine::IState> (void)> move_fn = [&](){return this->m_move_state;};
+  std::unordered_map<std::string, std::function<std::shared_ptr<Engine::IState> (void)>> character_states
     = {
-      {"wait", m_wait_state},
-      {"move", m_move_state},
+      {"wait", [this](){
+        LOG_DEBUG("WaitState lambda, null? {}", (this->m_wait_state == nullptr));
+        return this->m_wait_state;
+      }},
+      {"move", [&](){
+        LOG_DEBUG("MoveState lambda, null? {}", (this->m_move_state == nullptr));
+        return this->m_move_state;
+      }}
     };
 
   m_bob = std::make_shared<Character>(
-    // std::make_shared<Engine::Entity>(*app, entities[0]),
     std::make_shared<Engine::Entity>(*app, entities[0]),
     std::make_shared<Engine::StateMachine>(character_states)
   );
   m_wait_state = std::make_shared<WaitState>(m_bob, m_map);
   m_move_state = std::make_shared<MoveState>(m_bob, m_map);
+  m_bob->m_controller->change("wait");
 
 }
 

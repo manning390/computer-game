@@ -7,6 +7,7 @@ ComputerGame& ComputerGame::instance(void) {
 }
 
 void ComputerGame::init(void) {
+  LOG_TRACE("ComputerGame::init()");
   // Is this the best place for this?
   m_default_bindings = {
     Engine::ActionBinding(InputActions::UP,     Engine::EventType::Keyboard, sf::Keyboard::F),

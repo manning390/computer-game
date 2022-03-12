@@ -6,13 +6,13 @@
 #include "Engine/Map.hpp"
 #include "Engine/StateMachine.hpp"
 #include "Engine/Window.hpp"
+#include "Engine/EmptyState.hpp"
 
 #include "Game/Character.hpp"
 #include "Game/InputActions.hpp"
 #include "Game/States/MoveState.hpp"
-#include "Game/States/EmptyState.hpp"
 
-class WaitState : public EmptyState {
+class WaitState : public Engine::EmptyState {
   public:
     WaitState(std::shared_ptr<Character> t_char, std::shared_ptr<Engine::Map> t_map) :
       m_character(t_char),

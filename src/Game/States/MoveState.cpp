@@ -17,12 +17,6 @@ bool MoveState::update(float t_dt) {
   return false;
 };
 
-void MoveState::enter(MoveStateEnterParams t_data) {
-  m_movement = {t_data.x, t_data.y};
-  m_pixel_pos = m_entity->m_sprite.getPosition();
-  m_tween = std::make_unique<Engine::Tween>(0, m_tile_width, m_move_speed, Tween::Linear);
-};
-
 void MoveState::exit() {
   m_entity->m_tile_x = m_entity->m_tile_x + m_movement.x;
   m_entity->m_tile_y = m_entity->m_tile_y + m_movement.y;
