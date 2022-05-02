@@ -8,10 +8,6 @@ namespace Engine {
   class Animation {
     public:
       Animation(std::vector<int> t_frames, bool t_loop, float t_spf);
-      Animation(std::vector<int> t_frames, bool t_loop);
-      Animation(std::vector<int> t_frames);
-
-      // Animation(int t_frames[], bool t_loop, float t_spf);
 
       ~Animation() = default;
 

@@ -6,25 +6,6 @@ Engine::Animation::Animation(std::vector<int> t_frames, bool t_loop = true, floa
   m_frames = t_frames;
 }
 
-Engine::Animation::Animation(std::vector<int> t_frames, bool t_loop) {
-  m_loop = t_loop;
-  m_spf = 0.12;
-  m_frames = t_frames;
-}
-
-Engine::Animation::Animation(std::vector<int> t_frames) {
-  m_loop = true;
-  m_spf = 0.12;
-  m_frames = t_frames;
-}
-
-// Engine::Animation::Animation(int t_frames[] = {0}, bool t_loop = true, float t_spf = 0.12) {
-  // m_loop = t_loop;
-  // m_spf = t_spf;
-  // m_frames.clear();
-  // m_frames = t_frames;
-// }
-
 void Engine::Animation::update(float dt) {
   m_time += dt;
   if (m_time > m_spf) {

@@ -21,9 +21,8 @@ class MoveState : public Engine::EmptyState {
       : m_character(t_char),
         m_map(t_map),
         m_entity(t_char->m_entity),
-        m_controller(t_char->m_controller) {
-          m_anim = std::make_unique<Engine::Animation>(std::vector<int>(t_char->m_entity->m_start_frame));
-        };
+        m_controller(t_char->m_controller),
+        m_anim(std::make_unique<Engine::Animation>([t_char->m_entity->m_start_frame])){ };
     ~MoveState(void) override = default;
 
     // Time to move 1 square in seconds
