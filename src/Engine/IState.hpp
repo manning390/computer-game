@@ -7,9 +7,6 @@
 
 namespace Engine {
   class StateStack;
-  struct StateEnterParams {
-    static uint id;
-  };
   class IState {
     public:
       virtual ~IState(void) { };
