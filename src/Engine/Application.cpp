@@ -49,8 +49,7 @@ void Engine::Application::loop() {
   sf::Time previous = m_clock.getElapsedTime();
   sf::Time lag = sf::Time::Zero;
 
-  while(m_running && m_window->isOpen() && !m_stack->isEmpty())
-  {
+  while(m_running && m_window->isOpen() && !m_stack->isEmpty()) {
     sf::Time current = m_clock.getElapsedTime();
     sf::Time elapsed = current - previous;
     previous = current;

@@ -14,4 +14,4 @@ target_compile_options(${PROJECT_NAME} PRIVATE ${flags})
 target_link_libraries(${PROJECT_NAME} traits engine game ${SFML_LIBRARIES})
 # End ComputerGame
 
-# include(Install.cmake)
+include(Install.cmake)

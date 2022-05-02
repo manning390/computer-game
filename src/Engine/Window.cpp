@@ -158,7 +158,7 @@ sf::View Engine::Window::getView() const {
 // };
 
 void Engine::Window::move(sf::Vector2i t_v) {
-  LOG_TRACE("Engine::Window::move(sf::Vector2i({},{}))", t_v.x, t_v.y);
+  // LOG_TRACE("Engine::Window::move(sf::Vector2i({},{}))", t_v.x, t_v.y);
   auto view = getView();
   view.move((sf::Vector2f)t_v);
   m_window->setView(view);

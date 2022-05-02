@@ -8,19 +8,10 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
 
   // Temporary?
   std::vector<Engine::EntityDef> entities{{"monsters", 0, 0, 0, 0, 0, 0}};
-  // std::function<std::shared_ptr<Engine::IState> (void)> wait_fn = [&](){return this->m_wait_state;};
-  // std::function<std::shared_ptr<Engine::IState> (void)> move_fn = [&](){return this->m_move_state;};
-  std::unordered_map<std::string, std::function<std::shared_ptr<Engine::IState> (void)>> character_states
-    = {
-      {"wait", [this](){
-        LOG_DEBUG("WaitState lambda, null? {}", (this->m_wait_state == nullptr));
-        return this->m_wait_state;
-      }},
-      {"move", [&](){
-        LOG_DEBUG("MoveState lambda, null? {}", (this->m_move_state == nullptr));
-        return this->m_move_state;
-      }}
-    };
+
+  std::unordered_map<std::string, std::function<std::shared_ptr<Engine::IState> (void)>> character_states;
+  character_states["wait"] = [this](){ return this->m_wait_state; };
+  character_states["move"] = [this](){ return this->m_move_state; };
 
   m_bob = std::make_shared<Character>(
     std::make_shared<Engine::Entity>(*app, entities[0]),
@@ -29,7 +20,6 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   m_wait_state = std::make_shared<WaitState>(m_bob, m_map);
   m_move_state = std::make_shared<MoveState>(m_bob, m_map);
   m_bob->m_controller->change("wait");
-
 }
 
 void TestState::teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_ptr<Engine::Map> t_map) {
@@ -38,7 +28,9 @@ void TestState::teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_p
 }
 
 bool TestState::update(float t_dt) {
+  m_map->goTo((sf::Vector2i)m_bob->m_entity->m_sprite.getPosition());
   m_bob->m_controller->update(t_dt);
+
   return true;
 }
 

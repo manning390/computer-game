@@ -11,6 +11,7 @@
 #include "Game/Character.hpp"
 #include "Game/InputActions.hpp"
 #include "Game/States/MoveState.hpp"
+#include "SFML/System/Vector2.hpp"
 
 class WaitState : public Engine::EmptyState {
   public:
@@ -26,19 +27,27 @@ class WaitState : public Engine::EmptyState {
     std::shared_ptr<Engine::StateMachine> m_controller;
 
     void handleInput(std::shared_ptr<Engine::Input> t_input) override {
-      MoveStateEnterParams params = {0, 0};
       if (t_input->isActionPressed(InputActions::LEFT)) {
-        params.x = -1;
-        m_controller->change<MoveStateEnterParams>("move", params);
-      } else if (t_input->isActionPressed(InputActions::RIGHT)) {
-        params.x = 1;
-        m_controller->change<MoveStateEnterParams>("move", params);
-      } else if (t_input->isActionPressed(InputActions::UP)) {
-        params.y = -1;
-        m_controller->change<MoveStateEnterParams>("move", params);
-      } else if (t_input->isActionPressed(InputActions::DOWN)) {
-        params.y = 1;
-        m_controller->change<MoveStateEnterParams>("move", params);
+        m_character->m_direction = {-1, 0};
+        m_controller->change("move");
+        return;
+      }
+      if (t_input->isActionPressed(InputActions::RIGHT)) {
+        m_character->m_direction =  {1, 0};
+        m_controller->change("move");
+        return;
+      }
+      if (t_input->isActionPressed(InputActions::UP)) {
+        m_character->m_direction = {0, -1};
+        m_controller->change("move");
+        return;
+      }
+      if (t_input->isActionPressed(InputActions::DOWN)) {
+        m_character->m_direction =  {0, 1};
+        m_controller->change("move");
+        return;
       }
     };
+
+    // void exit(void) override { LOG_TRACE("WaitState::exit()");};
 };

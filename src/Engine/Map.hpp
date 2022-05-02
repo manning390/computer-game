@@ -10,6 +10,7 @@
 
 #include "Atlas.hpp"
 #include "Application.hpp"
+#include "SFML/System/Vector2.hpp"
 
 namespace Engine {
   class Map {
@@ -33,6 +34,8 @@ namespace Engine {
 
       void setPosition(float t_x, float t_y);
 
+      std::shared_ptr<Engine::Atlas> getAtlas() const;
+
     protected:
       float m_x = 0.0;
       float m_y = 0.0;
@@ -46,7 +49,7 @@ namespace Engine {
       sf::Sprite m_sprite;
       Engine::Layer m_layer;
 
-      // unit is tiles
+      // In tiles
       uint m_width;
       uint m_height;
       uint m_width_pixel;

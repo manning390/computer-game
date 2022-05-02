@@ -2,7 +2,6 @@ add_library(game
   ComputerGame.cpp
   Character.hpp
   Maps/TestMap.hpp
-  States/EmptyState.hpp
   States/MoveState.cpp
   States/WaitState.hpp
   States/TestState.cpp

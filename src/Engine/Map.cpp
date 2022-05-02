@@ -69,8 +69,8 @@ void Engine::Map::setPosition(float t_x, float t_y) {
 }
 
 void Engine::Map::goTo(sf::Vector2i t_v) {
-  LOG_TRACE("Engine::Map::goTo(sf::Vector2i({},{}))", t_v.x, t_v.y);
-  LOG_DEBUG("m_cam {},{}", m_cam.x, m_cam.y);
+  // LOG_TRACE("Engine::Map::goTo(sf::Vector2i({},{}))", t_v.x, t_v.y);
+  // LOG_DEBUG("m_cam {},{}", m_cam.x, m_cam.y);
   m_window->move(t_v - m_cam);
   m_cam = t_v;
 }
@@ -126,4 +126,8 @@ void Engine::Map::renderLayer(std::shared_ptr<Engine::Window> t_window, Engine::
     t_window->draw(m_sprite);
     ++i;
   }
+}
+
+std::shared_ptr<Engine::Atlas> Engine::Map::getAtlas() const {
+  return m_atlas;
 }

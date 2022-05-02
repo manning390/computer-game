@@ -29,12 +29,12 @@ namespace Engine {
       uint m_layer = 0;
       uint m_x;
       uint m_y;
+      uint m_start_frame = 0;
 
     protected:
       // sf::Texture m_texture;
       std::shared_ptr<Engine::Tileset> m_tileset;
       uint m_width;
       uint m_height;
-      uint m_start_frame = 0;
   };
 }

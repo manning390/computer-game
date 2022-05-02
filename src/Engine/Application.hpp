@@ -27,7 +27,7 @@ namespace Engine {
       ~Application(void) = default;
 
       /**
-      * @brief Hashmap of all the textures in the game
+      * @brief Hashmap of all the resources in the game
       *
       */
       std::unordered_map<std::string, std::shared_ptr<sf::Texture>> m_textures;
@@ -36,7 +36,12 @@ namespace Engine {
 
       std::unordered_map<std::string, std::shared_ptr<Engine::EntityDef>> m_entity_defs;
 
+      /**
+      * @brief Handle any command line arguments
+      *
+      */
       void processArguments(int argc, const char **argv);
+
       /**
       * @brief Tells the Application to start running
       *
