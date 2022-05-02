@@ -7,7 +7,7 @@
 namespace Engine {
   class Animation {
     public:
-      Animation(std::vector<int> t_frames, bool t_loop, float t_spf);
+      Animation(std::vector<int> t_frames, bool t_loop = true, float t_spf = 0.12);
 
       ~Animation() = default;
 
