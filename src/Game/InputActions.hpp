@@ -10,6 +10,7 @@
  * everytime we make a call to the input class.
  */
 namespace InputActions {
+  const uint DEBUG  = 666;
   const uint UP     = 1;
   const uint LEFT   = 2;
   const uint RIGHT  = 3;

@@ -57,8 +57,11 @@ void Engine::Application::loop() {
 
     // Process Input
     m_window->pollEvent(m_event);
-    m_input->update();
-    m_stack->handleInput(m_input);
+    // Don't capture input if the window is not active
+    if(m_window->isActive()) {
+      m_input->update();
+      m_stack->handleInput(m_input);
+    }
 
     while (lag >= m_frame_time) {
       m_stack->update(m_frame_time.asSeconds());
@@ -139,5 +142,7 @@ void Engine::Application::loadBindings() {
 
     // ++action;
   // }
+
+  for (auto action : m_input->getBindings()) action.debug();
 }
 

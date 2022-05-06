@@ -64,27 +64,30 @@ namespace Engine {
 
       /**
        * @brief Returns whether the window is open and showing
-       *
-       * @return true
-       * @return false
        */
-      bool isOpen();
+      bool isOpen() const;
+
+      /**
+       * @brief Returns whether the window is focused in the OS
+       */
+      bool isActive() const;
 
       void setPosition(const int t_x, const int t_y);
       void setFullscreen(bool t_fullscreen);
       void setFps(float t_fps);
       float getFps() const;
 
-      std::unique_ptr<sf::Event> getEvent();
+      std::unique_ptr<sf::Event> getEvent() const;
 
       sf::View calcView(const float t_window_width, const float t_window_height);
 
-      sf::Vector2i getScreenSize();
+      sf::Vector2i getScreenSize() const;
 
       sf::View getView() const;
 
       // void move(float t_x, float t_y);
       void move(sf::Vector2i t_v);
+
 
     private:
       /**
@@ -97,5 +100,6 @@ namespace Engine {
       bool m_fullscreen;
       float m_fps;
       float m_initial_aspect_ratio;
+      bool m_active = false;
   };
 } // namespace Engine

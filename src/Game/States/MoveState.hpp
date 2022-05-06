@@ -33,7 +33,7 @@ class MoveState : public Engine::EmptyState {
     std::shared_ptr<Engine::Entity> m_entity;
     std::shared_ptr<Engine::StateMachine> m_controller;
 
-    sf::Vector2i m_movement = {0, 0};
+    sf::Vector2i m_movement  = {0, 0};
     sf::Vector2f m_pixel_pos = {0, 0};
 
     bool update(float t_dt) override;

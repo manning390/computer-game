@@ -22,6 +22,9 @@ namespace Engine {
 
       // Not fully complete, just temp
       void setTilePos(uint x, uint y, uint layer, std::shared_ptr<Engine::Map> t_map);
+      void setTilePos(uint t_x, uint t_y, std::shared_ptr<Engine::Map> t_map) {
+        setTilePos(t_x, t_y, 0, t_map);
+      };
 
       sf::Sprite m_sprite;
       uint m_tile_x;

@@ -37,7 +37,6 @@ class TestState : public Engine::IState {
 
     void exit(void) override;
 
-    void teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_ptr<Engine::Map> t_map);
 
   protected:
     std::shared_ptr<Engine::Map> m_map;

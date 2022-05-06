@@ -3,7 +3,6 @@
 #include "SFML/Window/Mouse.hpp"
 
 Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, int t_binding) {
-  LOG_DEBUG("Action Binding S id: {}, type: {}, binding: {}", t_id, t_event_type, t_binding);
   id = t_id;
   event_types = std::make_pair(t_event_type, Engine::EventType::Unknown);
   bindings = std::make_pair(t_binding, sf::Keyboard::Unknown);
@@ -11,7 +10,6 @@ Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, 
 
 Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type_1, int t_binding_1,
                                                 Engine::EventType t_event_type_2, int t_binding_2) {
-  LOG_DEBUG("Action Binding D id: {}, type: {}, binding: {}, type: {}, binding: {}", t_id, t_event_type_1, t_binding_1, t_event_type_2, t_binding_2);
   id = t_id;
   event_types = std::make_pair(t_event_type_1, t_event_type_2);
   bindings = std::make_pair(t_binding_1, t_binding_2);
@@ -94,4 +92,8 @@ void Engine::Input::setActionBinding(ActionBinding t_action_binding) {
 
 Engine::Bitmask Engine::Input::getBitmask() {
   return m_current_frame_keys;
+}
+
+std::vector<Engine::ActionBinding> Engine::Input::getBindings() {
+  return m_action_bindings;
 }

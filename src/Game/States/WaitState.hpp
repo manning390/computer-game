@@ -25,6 +25,8 @@ class WaitState : public Engine::EmptyState {
     std::shared_ptr<Engine::Map> m_map;
     std::shared_ptr<Engine::Entity> m_entity;
     std::shared_ptr<Engine::StateMachine> m_controller;
+    float m_frame_count = 0;
+    float m_frame_reset_speed = 0.05;
 
     void handleInput(std::shared_ptr<Engine::Input> t_input) override {
       if (t_input->isActionPressed(InputActions::LEFT)) {
@@ -33,7 +35,7 @@ class WaitState : public Engine::EmptyState {
         return;
       }
       if (t_input->isActionPressed(InputActions::RIGHT)) {
-        m_character->m_direction =  {1, 0};
+        m_character->m_direction = {1, 0};
         m_controller->change("move");
         return;
       }
@@ -43,10 +45,26 @@ class WaitState : public Engine::EmptyState {
         return;
       }
       if (t_input->isActionPressed(InputActions::DOWN)) {
-        m_character->m_direction =  {0, 1};
+        m_character->m_direction = {0, 1};
         m_controller->change("move");
         return;
       }
+    };
+
+    bool update(float t_dt) override {
+      if (m_frame_count != -1) {
+        m_frame_count += t_dt;
+        if (m_frame_count >= m_frame_reset_speed) {
+          m_frame_count = -1;
+          m_entity->setFrame(m_entity->m_start_frame);
+        }
+      }
+
+      return true;
+    };
+
+    void enter() override {
+      m_frame_count = 0;
     };
 
     // void exit(void) override { LOG_TRACE("WaitState::exit()");};

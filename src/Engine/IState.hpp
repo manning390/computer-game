@@ -15,8 +15,8 @@ namespace Engine {
        *
        * @param t_dt the delta time between last frame
        *
-       * @return True continue running states after this one
-       * @return False this state is blocking, abort the update step
+       * @return True  Continue running
+       * @return False Blocking state
        */
       virtual bool update(float t_dt) = 0;
 

@@ -31,24 +31,39 @@ std::shared_ptr<sf::RenderWindow> Engine::Window::getNativeWindow() const {
 
 void Engine::Window::pollEvent(sf::Event& t_event) {
   while (m_window->pollEvent(t_event)) {
-    if (t_event.type == sf::Event::Closed) {
-      m_window->close();
-    }
+    switch(t_event.type) {
+      // Global button events
+      case sf::Event::KeyPressed:
+        switch(t_event.key.code) {
+          case sf::Keyboard::F5:
+            setFullscreen(!m_fullscreen);
+            break;
 
-    if ((t_event.type == sf::Event::KeyPressed) && (t_event.key.code == sf::Keyboard::F4)) {
-      m_window->close();
-    }
+          case sf::Keyboard::F4:
+            m_window->close();
+            return;
 
-    if ((t_event.type == sf::Event::KeyPressed) && (t_event.key.code == sf::Keyboard::F5)) {
-      setFullscreen(!m_fullscreen);
-    }
+          default: break;
+        }
+        break;
 
-    if(t_event.type == sf::Event::Resized && !m_fullscreen) {
-      m_window->setView(calcView(t_event.size.width, t_event.size.height));
-    }
+      // Window events
+      case sf::Event::Resized:
+        if (!m_fullscreen)
+          m_window->setView(calcView(t_event.size.width, t_event.size.height));
+        break;
 
-    if (t_event.type == sf::Event::LostFocus) {}
-    if (t_event.type == sf::Event::GainedFocus) {}
+      case sf::Event::LostFocus:
+      case sf::Event::GainedFocus:
+        m_active = !m_active;
+        break;
+
+      case sf::Event::Closed:
+        m_window->close();
+        return;
+
+      default: break;;
+    }
   }
 }
 
@@ -56,7 +71,7 @@ void Engine::Window::draw(const sf::Drawable &t_drawable, const sf::RenderStates
   m_window->draw(t_drawable, t_states);
 }
 
-bool Engine::Window::isOpen() {
+bool Engine::Window::isOpen() const {
   return m_window->isOpen();
 }
 
@@ -135,15 +150,15 @@ sf::View Engine::Window::calcView(const float t_window_width, const float t_wind
 
 void Engine::Window::reset(void) const {
   m_window->setActive(true);
-  // m_window->clear(sf::Color(51, 51, 51)); // Grey background
-  m_window->clear(sf::Color(0, 0, 0)); // Black background
+  m_window->clear(sf::Color(51, 51, 51)); // Grey background
+  // m_window->clear(sf::Color(0, 0, 0)); // Black background
 }
 
 void Engine::Window::display(void) const {
   m_window->display();
 }
 
-sf::Vector2i Engine::Window::getScreenSize() {
+sf::Vector2i Engine::Window::getScreenSize() const {
   return sf::Vector2i(m_window_width, m_window_height);
 }
 
@@ -163,4 +178,8 @@ void Engine::Window::move(sf::Vector2i t_v) {
   view.move((sf::Vector2f)t_v);
   m_window->setView(view);
 };
+
+bool Engine::Window::isActive() const {
+  return m_active;
+}
 

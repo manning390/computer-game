@@ -1,6 +1,7 @@
 assets/textures/*
 assets/tiled
 
+game
 bin/*
 build/*
 out/build/*

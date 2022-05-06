@@ -22,6 +22,20 @@ namespace Engine {
       uint id; // Action's id, must match vector index
       std::pair<EventType, EventType> event_types;
       std::pair<int, int> bindings;
+
+      void debug() const {
+        auto typeToString = [](EventType t_type){
+          switch (t_type) {
+            case EventType::Keyboard: return "Key";
+            case EventType::Mouse:    return "Mouse";
+            default: return "Unknown";
+          }
+        };
+
+        LOG_INFO("Action Binding id: {}, type: {}, binding: {}", id, typeToString(event_types.first), bindings.first);
+        if (event_types.second != Engine::EventType::Unknown)
+          LOG_INFO("Action Binding id: {}, type: {}, binding: {}", id, typeToString(event_types.second), bindings.second);
+      };
   };
 
   class Input {
@@ -44,6 +58,8 @@ namespace Engine {
       sf::Vector2i getViewMousePosition(); // View
 
       Engine::Bitmask getBitmask();
+
+      std::vector<ActionBinding> getBindings();
 
     protected:
       std::shared_ptr<Engine::Window> m_window;

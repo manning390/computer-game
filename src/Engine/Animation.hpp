@@ -4,6 +4,8 @@
 #include <array>
 #include <algorithm>
 
+#include "Log.hpp"
+
 namespace Engine {
   class Animation {
     public:
@@ -11,7 +13,7 @@ namespace Engine {
 
       ~Animation() = default;
 
-      void update(float dt);
+      void update(float t_dt);
       void setFrames(std::vector<int> t_frames);
       void setFrames(int t_frames[]);
       unsigned int frame(void);
@@ -22,6 +24,7 @@ namespace Engine {
       float m_time = 0;
       unsigned int m_index = 0;
       std::vector<int> m_frames;
+      unsigned int m_final_frame;
 
   };
 }
