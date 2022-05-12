@@ -32,16 +32,20 @@ namespace Engine {
       bool isBlocked(uint t_layer, uint t_tx, uint t_ty) const;
 
       // Converts tile coord to pixel cord
-      sf::Vector2f tileToPixel(uint t_x, uint t_y) const;
+      sf::Vector2f tileToPixel(uint t_tx, uint t_ty) const;
       // Converts pixel coord to tile cord
-      sf::Vector2i pixelToTile(float x, float y) const;
+      sf::Vector2i pixelToTile(float t_x, float t_y, bool t_no_offset = false) const;
+      sf::Vector2i pixelToTile(sf::Vector2f t_vec, bool t_no_offset = false) const;
 
       // Get map size in pixels
-      sf::Vector2u getSize(void) const;
+      sf::Vector2u getSizeP(void) const;
+
+      // Get map size in tiles
+      sf::Vector2u getSizeT(void) const;
 
       // Sets the map offset
       void setPosition(float t_x, float t_y);
-      sf::Vector2u getPosition() const;
+      sf::Vector2f getPosition() const;
       // Places the map via offset to the center of the view
       void centerMapInView();
 

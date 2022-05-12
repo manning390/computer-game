@@ -39,21 +39,28 @@ Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
   LOG_INFO("Blocking tile is: {}", m_blocking_tile);
 }
 
-sf::Vector2i Engine::Map::pixelToTile(float t_x, float t_y) const {
-  // Clamp to bounds of map
-  float x = std::clamp<float>(t_x, m_x, m_x + m_width_pixel - 1);
-  float y = std::clamp<float>(t_y, m_y, m_y + m_height_pixel - 1);
-
-  // Map from the bounded point to a tile
-  const int tileX = x / m_tile_width;
-  const int tileY = y / m_tile_height;
-
-  return sf::Vector2i(tileX, tileY);
+sf::Vector2i Engine::Map::pixelToTile(float t_x, float t_y, bool t_no_offset) const {
+  return pixelToTile(sf::Vector2f(t_x, t_y), t_no_offset);
 }
 
-sf::Vector2f Engine::Map::tileToPixel(uint t_x, uint t_y) const {
-  const int x_tile = std::clamp<uint>(t_x, 0, m_width);
-  const int y_tile = std::clamp<uint>(t_y, 0, m_height);
+sf::Vector2i Engine::Map::pixelToTile(sf::Vector2f t_vec, bool t_no_offset) const {
+  // Remove the offset to get the pixel within the map
+  if (!t_no_offset) t_vec = t_vec - getPosition();
+
+  // Clamp to bounds of map
+  float x = std::clamp<float>(t_vec.x, 0, m_width_pixel - 1);
+  float y = std::clamp<float>(t_vec.y, 0, m_height_pixel - 1);
+
+  // Map from the bounded point to a tile
+  const int tile_x = x / m_tile_width;
+  const int tile_y = y / m_tile_height;
+
+  return sf::Vector2i(tile_x, tile_y);
+}
+
+sf::Vector2f Engine::Map::tileToPixel(uint t_tx, uint t_ty) const {
+  const int x_tile = std::clamp<uint>(t_tx, 0, m_width);
+  const int y_tile = std::clamp<uint>(t_ty, 0, m_height);
 
   return sf::Vector2f(m_x + (x_tile * m_tile_width), m_y + (y_tile * m_tile_height));
 }
@@ -64,8 +71,8 @@ void Engine::Map::setPosition(float t_x, float t_y) {
   m_y = t_y;
 }
 
-sf::Vector2u Engine::Map::getPosition() const {
-  return sf::Vector2u(m_x, m_y);
+sf::Vector2f Engine::Map::getPosition() const {
+  return sf::Vector2f(m_x, m_y);
 }
 
 void Engine::Map::centerMapInView() {
@@ -95,16 +102,20 @@ void Engine::Map::goToTile(uint t_x, uint t_y) {
   );
 }
 
-sf::Vector2u Engine::Map::getSize(void) const {
+sf::Vector2u Engine::Map::getSizeP(void) const {
   return sf::Vector2u(m_width_pixel, m_height_pixel);
+}
+
+sf::Vector2u Engine::Map::getSizeT(void) const {
+  return sf::Vector2u(m_width, m_height);
 }
 
 std::vector<uint>& Engine::Map::getLayer(uint t_layer_index) const {
   auto& atlas_layer = m_atlas->layers[t_layer_index / 3];
-  switch(t_layer_index % 3) {
-    case 0: return atlas_layer.base;
-    case 1: return atlas_layer.decoration;
-  }
+  auto index = t_layer_index % 3;
+
+  if (index == 0) return atlas_layer.base;
+  if (index == 1) return atlas_layer.decoration;
   return atlas_layer.collision;
 }
 

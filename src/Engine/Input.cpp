@@ -42,7 +42,7 @@ bool Engine::Input::isBindingPressed(Engine::EventType t_type, int t_keycode) {
   }
 }
 
-sf::Vector2i Engine::Input::getMousePosition() {
+sf::Vector2i Engine::Input::getMousePosition() const {
   auto window = m_window->getNativeWindow();
   auto coord  = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
   auto view   = window->getView().getSize();
@@ -50,7 +50,7 @@ sf::Vector2i Engine::Input::getMousePosition() {
   return sf::Vector2i(coord.x, coord.y);
 }
 
-sf::Vector2i Engine::Input::getViewMousePosition() {
+sf::Vector2i Engine::Input::getViewMousePosition() const {
   return sf::Mouse::getPosition(*m_window->getNativeWindow());
 }
 

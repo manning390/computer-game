@@ -22,14 +22,9 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   m_move_state = std::make_shared<MoveState>(m_bob, m_map);
   m_bob->m_controller->change("wait");
   m_bob->m_entity->setTilePos(1, 1, m_map);
-  m_map->tileToPixel(1,1);
   // m_map->goToTile(1, 1);
 }
 
-// void TestState::teleport(std::shared_ptr<Engine::Entity> t_entity, std::shared_ptr<Engine::Map> t_map) {
-  // auto vec = t_map->tileToPixel(t_entity->m_tile_x, t_entity->m_tile_y);
-  // t_entity->m_sprite.setPosition(vec.x, vec.y);
-// }
 
 bool TestState::update(float t_dt) {
   m_bob->m_controller->update(t_dt);
@@ -45,12 +40,17 @@ void TestState::render(std::shared_ptr<Engine::Window> t_window) {
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   m_bob->m_controller->handleInput(t_input);
+
+  // Debug to refresh atlas
   if (t_input->isActionJustPressed(InputActions::DEBUG)) {
-    LOG_DEBUG("DEBUG PRESSED");
     m_map->setAtlas(std::make_shared<Maps::TestMap>());
+    LOG_DEBUG("Refreshed Atlas");
   }
+
+  // A to give mouse tile pos
   if (t_input->isActionJustPressed(InputActions::A)) {
-    LOG_DEBUG("tile pos? {},{}", m_bob->m_entity->m_tile_x, m_bob->m_entity->m_tile_y);
+    auto tile_pos = m_map->pixelToTile((sf::Vector2f)t_input->getMousePosition());
+    LOG_DEBUG("tile {}: {},{}", tile_pos.y * m_map->getSizeT().x + tile_pos.x, tile_pos.x, tile_pos.y);
   }
 }
 

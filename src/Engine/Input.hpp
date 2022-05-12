@@ -54,8 +54,8 @@ namespace Engine {
 
       void update();
 
-      sf::Vector2i getMousePosition(); // World
-      sf::Vector2i getViewMousePosition(); // View
+      sf::Vector2i getMousePosition() const; // World
+      sf::Vector2i getViewMousePosition() const; // View
 
       Engine::Bitmask getBitmask();
 
