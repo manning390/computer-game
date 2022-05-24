@@ -1,4 +1,5 @@
 #include "Map.hpp"
+#include "Trigger.hpp"
 
 Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) {
   LOG_TRACE("Engine::Map::Map()");
@@ -119,12 +120,16 @@ std::vector<uint>& Engine::Map::getLayer(uint t_layer_index) const {
   return atlas_layer.collision;
 }
 
-uint Engine::Map::getTileIndex(uint t_tx, uint t_ty, uint t_layer_index) const {
+uint Engine::Map::coordToIndex(uint t_x, uint t_y, uint t_layer) const {
+  return (t_layer * m_width * m_height) + t_x + (t_y * m_width);
+}
+
+uint Engine::Map::getTileId(uint t_tx, uint t_ty, uint t_layer_index) const {
   return getLayer(t_layer_index)[t_tx + (t_ty * m_width)];
 }
 
 bool Engine::Map::isBlocked(uint t_layer, uint t_tx, uint t_ty) const {
-  return getTileIndex(t_tx, t_ty, t_layer + 2) == m_blocking_tile;
+  return getTileId(t_tx, t_ty, t_layer + 2) == m_blocking_tile;
 }
 
 void Engine::Map::setAtlas(std::shared_ptr<Engine::Atlas> t_atlas) {
@@ -133,6 +138,11 @@ void Engine::Map::setAtlas(std::shared_ptr<Engine::Atlas> t_atlas) {
 
 std::shared_ptr<Engine::Atlas> Engine::Map::getAtlas() const {
   return m_atlas;
+}
+
+std::shared_ptr<Engine::Trigger> Engine::Map::getTrigger(uint t_x, uint t_y, uint t_layer) {
+  auto index = coordToIndex(t_x, t_y, t_layer);
+  return m_triggers[index];
 }
 
 void Engine::Map::render(std::shared_ptr<Engine::Window> t_window) {

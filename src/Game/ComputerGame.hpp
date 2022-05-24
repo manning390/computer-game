@@ -10,17 +10,24 @@
 
 class ComputerGame : public Engine::Application {
   public:
-    /**
-    * @brief Gets the instance of the application, if it doesn't exist instanciates it
-    *
-    */
-    static ComputerGame& instance(void);
+    ~ComputerGame(void) = default;
+
+    static ComputerGame* instance(void) {
+        // std::cout << "Application::instance()" << std::endl;
+        return (!s_instance) ? s_instance = new ComputerGame() : s_instance;
+    }
 
   protected:
     ComputerGame(void) :
-      Engine::Application("assets/manifests/tilesets.manifest", "assets/manifests/textures.manifest") {};
+      Engine::Application("assets/manifests/tilesets.manifest", "assets/manifests/textures.manifest") {
+        s_instance = this;
+    };
 
     void init(void) override;
 
     void createInitialState(void) override;
+
+  private:
+    static ComputerGame* s_instance;
 };
+

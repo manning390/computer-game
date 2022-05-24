@@ -47,3 +47,7 @@ void Engine::Entity::setTilePos(uint t_x, uint t_y, uint t_layer, std::shared_pt
   m_x = vec.x;
   m_y = vec.y;
 }
+
+sf::Vector2i Engine::Entity::getTilePos() const {
+  return sf::Vector2i(m_tile_x, m_tile_y);
+}

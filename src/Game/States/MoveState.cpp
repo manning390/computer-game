@@ -51,11 +51,19 @@ bool MoveState::update(float t_dt) {
 };
 
 void MoveState::exit() {
+  if (m_movement.x != 0 || m_movement.y != 0) {
+    auto trigger = m_map->getTrigger(m_entity->m_tile_x, m_entity->m_tile_y, m_entity->m_layer);
+    if (trigger) trigger->m_on_exit(trigger, m_entity);
+  }
+
   m_entity->m_tile_x = m_entity->m_tile_x + m_movement.x;
   m_entity->m_tile_y = m_entity->m_tile_y + m_movement.y;
 
   // 'Teleport' cause this will be deleted later
   auto vec = m_map->tileToPixel(m_entity->m_tile_x, m_entity->m_tile_y);
   m_entity->m_sprite.setPosition(vec.x, vec.y);
+
+  auto trigger = m_map->getTrigger(m_entity->m_tile_x, m_entity->m_tile_y, m_entity->m_layer);
+  if (trigger) trigger->m_on_enter(trigger, m_entity);
 };
 

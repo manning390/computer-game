@@ -1,6 +1,4 @@
 #include "Input.hpp"
-#include "Log.hpp"
-#include "SFML/Window/Mouse.hpp"
 
 Engine::ActionBinding::ActionBinding(uint t_id, Engine::EventType t_event_type, int t_binding) {
   id = t_id;

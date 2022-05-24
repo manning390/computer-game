@@ -24,7 +24,7 @@
 namespace Engine {
   class Application : public Traits::NoCopy, public Traits::NoMove {
     public:
-      ~Application(void) = default;
+      virtual ~Application(void) = default;
 
       /**
       * @brief Hashmap of all the resources in the game
@@ -37,7 +37,7 @@ namespace Engine {
       std::unordered_map<std::string, std::shared_ptr<Engine::EntityDef>> m_entity_defs;
 
       /**
-      * @brief Handle any command line arguments
+      * @brief Tells the Application to start running
       *
       */
       void processArguments(int argc, const char **argv);

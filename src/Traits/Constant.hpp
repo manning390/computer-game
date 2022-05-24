@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 typedef unsigned int uint;
 
 namespace Engine {

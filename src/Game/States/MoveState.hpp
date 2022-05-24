@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Engine/Trigger.hpp"
 #include "Engine/Tween.hpp"
 #include "Engine/Animation.hpp"
 #include "Engine/Entity.hpp"

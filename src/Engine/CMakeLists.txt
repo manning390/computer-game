@@ -1,4 +1,6 @@
 add_library(engine
+    Actions.hpp
+    Trigger.hpp
     Application.cpp
     Animation.cpp
     Atlas.cpp

@@ -8,6 +8,7 @@
 #include "Log.hpp"
 #include "Helper.hpp"
 
+#include "Engine/Trigger.hpp"
 #include "Engine/Actions.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/IState.hpp"
@@ -16,6 +17,7 @@
 #include "Engine/StateMachine.hpp"
 #include "Engine/StateStack.hpp"
 #include "Engine/Window.hpp"
+#include "Engine/Trigger.hpp"
 
 #include "Game/ComputerGame.hpp"
 #include "Game/Character.hpp"
@@ -44,6 +46,4 @@ class TestState : public Engine::IState {
     std::shared_ptr<WaitState> m_wait_state;
     std::shared_ptr<MoveState> m_move_state;
     std::shared_ptr<Character> m_bob;
-    Actions::ActionFn m_teleport_up = Actions::Teleport(m_map, 2, 2, 0);
-    Actions::ActionFn m_teleport_down = Actions::Teleport(m_map, 2, 12, 0);
-} ;
+};

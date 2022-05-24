@@ -2,7 +2,9 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Mouse.hpp>
 
+#include "Log.hpp"
 #include "Constant.hpp"
 #include "Bitmask.hpp"
 #include "Window.hpp"

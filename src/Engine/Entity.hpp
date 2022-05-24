@@ -4,9 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Engine/Map.hpp"
-
 #include "EntityDef.hpp"
+#include "Map.hpp"
 #include "Application.hpp"
 
 namespace Engine {
@@ -25,6 +24,7 @@ namespace Engine {
       void setTilePos(uint t_x, uint t_y, std::shared_ptr<Engine::Map> t_map) {
         setTilePos(t_x, t_y, 0, t_map);
       };
+      sf::Vector2i getTilePos() const;
 
       sf::Sprite m_sprite;
       uint m_tile_x;
