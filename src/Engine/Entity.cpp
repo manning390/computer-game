@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-Engine::Entity::Entity(Engine::Application & t_app, EntityDef & t_entity_def) {
+Engine::Entity::Entity(Engine::Application & t_app, const EntityDef & t_entity_def) {
   m_tileset = t_app.getTileset(t_entity_def.tileset);
   m_sprite = sf::Sprite(
     *(t_app.getTexture(m_tileset->texture)),

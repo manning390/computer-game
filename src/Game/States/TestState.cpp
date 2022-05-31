@@ -3,33 +3,28 @@
 TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   LOG_TRACE("TestState::TestState()");
 
-  auto app = ComputerGame::instance();
-  m_map = std::make_shared<Engine::Map>(*app, std::make_shared<Maps::TestMap>());
+  auto & app = *ComputerGame::instance();
+  m_map = std::make_shared<Engine::Map>(app, std::make_shared<Maps::TestMap>());
   m_map->centerMapInView();
 
-  // Temporary?
-  std::vector<Engine::EntityDef> entities{{"monsters", 0, 0, 0, 0, 0, 0}};
+  m_char = std::make_shared<Engine::Character>(app, g_characters.at("hero"), m_map);
+  m_npc = std::make_shared<Engine::Character>(app, g_characters.at("standing_npc"), m_map);
+  // m_npc->m_entity->setTilePos(8, 9, m_npc->m_map);
 
-  std::unordered_map<std::string, std::function<std::shared_ptr<Engine::IState> (void)>> character_states;
-  character_states["wait"] = [this](){ return this->m_wait_state; };
-  character_states["move"] = [this](){ return this->m_move_state; };
-
-  m_bob = std::make_shared<Character>(
-    std::make_shared<Engine::Entity>(*app, entities[0]),
-    std::make_shared<Engine::StateMachine>(character_states)
-  );
-  m_wait_state = std::make_shared<WaitState>(m_bob, m_map);
-  m_move_state = std::make_shared<MoveState>(m_bob, m_map);
-  m_bob->m_controller->change("wait");
-  m_bob->m_entity->setTilePos(1, 1, m_map);
+  // m_bob->m_controller->change("wait");
+  // m_bob->m_entity->setTilePos(1, 1, m_map);
+  auto EFn = Actions::EmptyFn;
   m_map->m_triggers[m_map->coordToIndex(2,  2)] = std::make_shared<Engine::Trigger>(Actions::Teleport(m_map, 2, 12));
   m_map->m_triggers[m_map->coordToIndex(2, 12)] = std::make_shared<Engine::Trigger>(Actions::Teleport(m_map, 2,  2));
-  m_map->goToTile(1, 1);
+  m_map->m_triggers[m_map->coordToIndex(2,  9)] = std::make_shared<Engine::Trigger>(EFn, EFn, [](std::shared_ptr<Engine::Trigger>, std::shared_ptr<Engine::Entity>){
+    LOG_WARN("There's a chest here!");
+  });
+  // m_map->goToTile(1, 1);
 }
 
 
 bool TestState::update(float t_dt) {
-  m_bob->m_controller->update(t_dt);
+  m_char->m_controller->update(t_dt);
   // m_map->goTo((sf::Vector2i)m_bob->m_entity->m_sprite.getPosition());
 
   return true;
@@ -37,11 +32,12 @@ bool TestState::update(float t_dt) {
 
 void TestState::render(std::shared_ptr<Engine::Window> t_window) {
   m_map->render(t_window);
-  m_bob->m_entity->render(t_window);
+  m_char->m_entity->render(t_window);
+  m_npc->m_entity->render(t_window);
 }
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
-  m_bob->m_controller->handleInput(t_input);
+  m_char->m_controller->handleInput(t_input);
 
   // Debug to refresh atlas
   if (t_input->isActionJustPressed(InputActions::DEBUG1)) {
@@ -56,9 +52,9 @@ void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   }
 
   if (t_input->isActionJustPressed(InputActions::A)) {
-    auto facing = m_bob->m_entity->getTilePos() + m_bob->m_direction;
-    auto trigger = m_map->m_triggers[m_map->coordToIndex(facing.x, facing.y, m_bob->m_entity->m_layer)];
-    if (trigger) trigger->m_on_use(trigger, m_bob->m_entity);
+    auto facing = m_char->m_entity->getTilePos() + m_char->m_direction;
+    auto trigger = m_map->m_triggers[m_map->coordToIndex(facing.x, facing.y, m_char->m_entity->m_layer)];
+    if (trigger) trigger->m_on_use(trigger, m_char->m_entity);
   }
 }
 

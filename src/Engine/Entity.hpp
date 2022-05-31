@@ -11,7 +11,7 @@
 namespace Engine {
   class Entity {
     public:
-      Entity(Engine::Application& t_app, EntityDef &t_entity_def);
+      Entity(Engine::Application& t_app, const EntityDef &t_entity_def);
 
       void update(float t_delta);
 

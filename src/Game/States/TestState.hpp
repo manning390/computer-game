@@ -20,7 +20,8 @@
 #include "Engine/Trigger.hpp"
 
 #include "Game/ComputerGame.hpp"
-#include "Game/Character.hpp"
+#include "Game/EntityData.hpp"
+#include "Engine/Character.hpp"
 #include "Game/Maps/TestMap.hpp"
 #include "Game/States/WaitState.hpp"
 #include "Game/States/MoveState.hpp"
@@ -43,7 +44,8 @@ class TestState : public Engine::IState {
 
   protected:
     std::shared_ptr<Engine::Map> m_map;
-    std::shared_ptr<WaitState> m_wait_state;
-    std::shared_ptr<MoveState> m_move_state;
-    std::shared_ptr<Character> m_bob;
+    // std::shared_ptr<WaitState> m_wait_state;
+    // std::shared_ptr<MoveState> m_move_state;
+    std::shared_ptr<Engine::Character> m_char;
+    std::shared_ptr<Engine::Character> m_npc;
 };

@@ -2,27 +2,29 @@
 
 void MoveState::enter() {
   // LOG_TRACE("MoveState::enter()");
+  auto entity = m_char->m_entity;
+  m_anim = std::make_unique<Engine::Animation>(std::vector<int>(entity->m_start_frame));
 
-  m_movement = m_character->m_direction;
-  m_pixel_pos = m_entity->m_sprite.getPosition();
+  m_movement = m_char->m_direction;
+  m_pixel_pos = entity->m_sprite.getPosition();
 
   if (m_movement.x == 1) {
-    m_anim->setFrames(m_character->m_anim_right);
+    m_anim->setFrames(m_char->m_anims["right"]);
   } else if (m_movement.x == -1) {
-    m_anim->setFrames(m_character->m_anim_left);
+    m_anim->setFrames(m_char->m_anims["left"]);
   } else if (m_movement.y == -1) {
-    m_anim->setFrames(m_character->m_anim_up);
+    m_anim->setFrames(m_char->m_anims["up"]);
   } else if (m_movement.y == 1) {
-    m_anim->setFrames(m_character->m_anim_down);
+    m_anim->setFrames(m_char->m_anims["down"]);
   }
 
-  auto target_x = m_movement.x + m_entity->m_tile_x;
-  auto target_y = m_movement.y + m_entity->m_tile_y;
+  auto target_x = m_movement.x + entity->m_tile_x;
+  auto target_y = m_movement.y + entity->m_tile_y;
   if (m_map->isBlocked(0, target_x, target_y)) {
     m_movement.x = 0;
     m_movement.y = 0;
-    m_entity->setFrame(m_anim->frame());
-    m_controller->change("wait");
+    entity->setFrame(m_anim->frame());
+    m_char->m_controller->change("wait");
     return;
   }
 
@@ -33,37 +35,40 @@ void MoveState::enter() {
 };
 
 bool MoveState::update(float t_dt) {
+  auto entity = m_char->m_entity;
   m_tween->update(t_dt);
   m_anim->update(t_dt);
 
   auto value = m_tween->getValue();
-  m_entity->m_x = m_pixel_pos.x + (value * m_movement.x);
-  m_entity->m_y = m_pixel_pos.y + (value * m_movement.y);
+  entity->m_x = m_pixel_pos.x + (value * m_movement.x);
+  entity->m_y = m_pixel_pos.y + (value * m_movement.y);
 
-  m_entity->m_sprite.setPosition(m_entity->m_x, m_entity->m_y);
-  m_entity->setFrame(m_anim->frame());
+  entity->m_sprite.setPosition(entity->m_x, entity->m_y);
+  entity->setFrame(m_anim->frame());
 
   if (m_tween->isFinished()) {
-    m_controller->change("wait");
+    m_char->m_controller->change("wait");
   }
 
   return true;
 };
 
 void MoveState::exit() {
+  // LOG_TRACE("MoveState::exit()");
+  auto entity = m_char->m_entity;
   if (m_movement.x != 0 || m_movement.y != 0) {
-    auto trigger = m_map->getTrigger(m_entity->m_tile_x, m_entity->m_tile_y, m_entity->m_layer);
-    if (trigger) trigger->m_on_exit(trigger, m_entity);
+    auto trigger = m_map->getTrigger(entity->m_tile_x, entity->m_tile_y, entity->m_layer);
+    if (trigger) trigger->m_on_exit(trigger, entity);
   }
 
-  m_entity->m_tile_x = m_entity->m_tile_x + m_movement.x;
-  m_entity->m_tile_y = m_entity->m_tile_y + m_movement.y;
+  entity->m_tile_x = entity->m_tile_x + m_movement.x;
+  entity->m_tile_y = entity->m_tile_y + m_movement.y;
 
   // 'Teleport' cause this will be deleted later
-  auto vec = m_map->tileToPixel(m_entity->m_tile_x, m_entity->m_tile_y);
-  m_entity->m_sprite.setPosition(vec.x, vec.y);
+  auto vec = m_map->tileToPixel(entity->m_tile_x, entity->m_tile_y);
+  entity->m_sprite.setPosition(vec.x, vec.y);
 
-  auto trigger = m_map->getTrigger(m_entity->m_tile_x, m_entity->m_tile_y, m_entity->m_layer);
-  if (trigger) trigger->m_on_enter(trigger, m_entity);
+  auto trigger = m_map->getTrigger(entity->m_tile_x, entity->m_tile_y, entity->m_layer);
+  if (trigger) trigger->m_on_enter(trigger, entity);
 };
 

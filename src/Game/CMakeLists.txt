@@ -1,9 +1,9 @@
 add_library(game
   ComputerGame.cpp
-  Character.hpp
   Maps/TestMap.hpp
   States/MoveState.cpp
   States/WaitState.hpp
+  States/NPCStandState.hpp
   States/TestState.cpp
 )
 
