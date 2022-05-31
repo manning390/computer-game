@@ -24,7 +24,7 @@ void MoveState::enter() {
     m_movement.x = 0;
     m_movement.y = 0;
     entity->setFrame(m_anim->frame());
-    m_char->m_controller->change("wait");
+    m_char->m_controller->change(m_char->m_default_state);
     return;
   }
 
@@ -47,7 +47,7 @@ bool MoveState::update(float t_dt) {
   entity->setFrame(m_anim->frame());
 
   if (m_tween->isFinished()) {
-    m_char->m_controller->change("wait");
+    m_char->m_controller->change(m_char->m_default_state);
   }
 
   return true;

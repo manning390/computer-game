@@ -24,4 +24,7 @@ namespace Helper {
   std::string stripFile(std::string t_s);
 
   std::vector<std::string> getFileLines(const std::string t_file_path);
+
+  int random(int t_max);
+  int random(int t_min, int t_max);
 }

@@ -14,6 +14,7 @@ Engine::Character::Character(Engine::Application& t_app, const Engine::Character
   }
   m_controller = std::make_shared<Engine::StateMachine>(m_states);
 
-  assert(m_states.count(t_def.initial_state) && "Initial State not present in Character states");
-  m_controller->change(t_def.initial_state);
+  assert(m_states.count(t_def.state) && "Initial State not present in Character states");
+  m_controller->change(t_def.state);
+  m_default_state = t_def.state;
 };

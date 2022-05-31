@@ -53,3 +53,13 @@ std::vector<std::string> Helper::getFileLines(const std::string t_file_path) {
 
   return file_vec;
 }
+
+// Exclusive
+int Helper::random(int t_max) {
+  return rand() % (t_max);
+};
+
+// Inclusive
+int Helper::random(int t_min, int t_max) {
+  return (rand() % (t_max + 1 - t_min)) + t_min;
+};

@@ -39,6 +39,6 @@ namespace Engine {
     std::unordered_map<std::string, std::vector<int>> anims;
     std::unordered_map<std::string, Engine::StateFactoryFn> states;
     sf::Vector2i initial_direction = {1, 0};
-    std::string initial_state = "wait";
+    std::string state = "wait";
   };
 };

@@ -1,7 +1,7 @@
 #include "StateMachine.hpp"
 
 Engine::StateMachine::StateMachine(
-    std::unordered_map<std::string, std::shared_ptr<Engine::IState>> t_states)
+    std::unordered_map<std::string, std::shared_ptr<Engine::IState>>& t_states)
   : m_states(t_states) {};
 
 void Engine::StateMachine::change(std::string t_state_key) {

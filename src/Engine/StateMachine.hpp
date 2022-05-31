@@ -9,7 +9,7 @@
 namespace Engine {
   class StateMachine {
     public:
-      StateMachine(std::unordered_map<std::string, std::shared_ptr<Engine::IState>> t_states);
+      StateMachine(std::unordered_map<std::string, std::shared_ptr<Engine::IState>>& t_states);
 
       void change(std::string t_state_key);
       void update(float t_dt);

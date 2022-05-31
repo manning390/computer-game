@@ -4,9 +4,10 @@
 
 #include "Engine/Character.hpp"
 #include "Engine/EntityDef.hpp"
-#include "Game/States/WaitState.hpp"
-#include "Game/States/MoveState.hpp"
-#include "Game/States/NPCStandState.hpp"
+#include "Game/States/Character/WaitState.hpp"
+#include "Game/States/Character/MoveState.hpp"
+#include "Game/States/Character/NPCStandState.hpp"
+#include "Game/States/Character/PlanStrollState.hpp"
 
 inline const std::unordered_map<std::string, Engine::EntityDef> g_entities{
 //  key      tileset    f  x  y  l  w  h
@@ -34,5 +35,17 @@ inline const std::unordered_map<std::string, Engine::CharacterDef> g_characters{
                      {},
                      {{"npc_stand", makeStateFactory<NPCStandState>()}},
                      {0, 1},
-                     "npc_stand"}}
+                     "npc_stand"}},
+  {"strolling_npc", {g_entities.at("npc"),
+                      {
+                        {"right", {0, 4}},
+                        {"down",  {1, 5}},
+                        {"up",    {2, 6}},
+                        {"left",  {3, 7}}},
+                      {
+                       {"plan_stroll", makeStateFactory<PlanStrollState>()},
+                       {"move", makeStateFactory<MoveState>()}
+                      },
+                      {0, 1},
+                      "plan_stroll"}}
 };

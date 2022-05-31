@@ -1,14 +1,8 @@
 #pragma once
 
-#include "Engine/IState.hpp"
-#include "Engine/Entity.hpp"
-#include "Engine/Input.hpp"
 #include "Engine/Map.hpp"
-#include "Engine/StateMachine.hpp"
-#include "Engine/Window.hpp"
-#include "Engine/EmptyState.hpp"
-
 #include "Engine/Character.hpp"
+#include "Engine/EmptyState.hpp"
 
 class NPCStandState : public Engine::EmptyState {
   public:

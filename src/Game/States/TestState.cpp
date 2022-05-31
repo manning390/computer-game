@@ -8,11 +8,8 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   m_map->centerMapInView();
 
   m_char = std::make_shared<Engine::Character>(app, g_characters.at("hero"), m_map);
-  m_npc = std::make_shared<Engine::Character>(app, g_characters.at("standing_npc"), m_map);
-  // m_npc->m_entity->setTilePos(8, 9, m_npc->m_map);
+  m_npc = std::make_shared<Engine::Character>(app, g_characters.at("strolling_npc"), m_map);
 
-  // m_bob->m_controller->change("wait");
-  // m_bob->m_entity->setTilePos(1, 1, m_map);
   auto EFn = Actions::EmptyFn;
   m_map->m_triggers[m_map->coordToIndex(2,  2)] = std::make_shared<Engine::Trigger>(Actions::Teleport(m_map, 2, 12));
   m_map->m_triggers[m_map->coordToIndex(2, 12)] = std::make_shared<Engine::Trigger>(Actions::Teleport(m_map, 2,  2));
@@ -25,6 +22,7 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
 
 bool TestState::update(float t_dt) {
   m_char->m_controller->update(t_dt);
+  m_npc->m_controller->update(t_dt);
   // m_map->goTo((sf::Vector2i)m_bob->m_entity->m_sprite.getPosition());
 
   return true;
@@ -32,12 +30,13 @@ bool TestState::update(float t_dt) {
 
 void TestState::render(std::shared_ptr<Engine::Window> t_window) {
   m_map->render(t_window);
-  m_char->m_entity->render(t_window);
   m_npc->m_entity->render(t_window);
+  m_char->m_entity->render(t_window);
 }
 
 void TestState::handleInput(std::shared_ptr<Engine::Input> t_input) {
   m_char->m_controller->handleInput(t_input);
+  m_npc->m_controller->handleInput(t_input);
 
   // Debug to refresh atlas
   if (t_input->isActionJustPressed(InputActions::DEBUG1)) {

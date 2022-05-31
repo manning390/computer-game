@@ -10,7 +10,6 @@
 
 #include "Engine/Character.hpp"
 #include "Game/InputActions.hpp"
-#include "Game/States/MoveState.hpp"
 #include "SFML/System/Vector2.hpp"
 
 class WaitState : public Engine::EmptyState {
