@@ -8,7 +8,7 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   m_map->centerMapInView();
 
   m_char = std::make_shared<Engine::Character>(app, g_characters.at("hero"), m_map);
-  m_npc = std::make_shared<Engine::Character>(app, g_characters.at("strolling_npc"), m_map);
+  m_npc  = std::make_shared<Engine::Character>(app, g_characters.at("strolling_npc"), m_map);
 
   auto EFn = Actions::EmptyFn;
   m_map->m_triggers[m_map->coordToIndex(2,  2)] = std::make_shared<Engine::Trigger>(Actions::Teleport(m_map, 2, 12));

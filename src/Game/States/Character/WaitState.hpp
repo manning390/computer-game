@@ -57,14 +57,7 @@ class WaitState : public Engine::EmptyState {
     };
 
     bool update(float t_dt) override {
-      if (m_frame_count != -1) {
-        m_frame_count += t_dt;
-        if (m_frame_count >= m_frame_reset_speed) {
-          m_frame_count = -1;
-          auto& entity = m_char->m_entity;
-          entity->setFrame(entity->m_start_frame);
-        }
-      }
+      resetToFirstFrame(t_dt);
 
       if (m_held) {
         m_held_timer += t_dt;
@@ -79,4 +72,15 @@ class WaitState : public Engine::EmptyState {
     };
 
     // void exit(void) override { LOG_TRACE("WaitState::exit()"); };
+
+  private:
+    void resetToFirstFrame(float t_dt) {
+      if (m_frame_count != -1) {
+        m_frame_count += t_dt;
+        if (m_frame_count >= m_frame_reset_speed) {
+          m_frame_count = -1;
+          m_char->m_entity->setFrame(m_char->m_entity->m_start_frame);
+        }
+      }
+    }
 };
