@@ -3,7 +3,6 @@
 
 #include "Log.hpp"
 #include "Constant.hpp"
-#include "Engine/Application.hpp"
 #include "Game/ComputerGame.hpp"
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)

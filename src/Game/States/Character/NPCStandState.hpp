@@ -6,10 +6,6 @@
 
 class NPCStandState : public Engine::EmptyState {
   public:
-    NPCStandState(Engine::Character* t_char, std::shared_ptr<Engine::Map> t_map) :
-      m_char(t_char),
-      m_map(t_map) {};
+    NPCStandState(Engine::Character*, Engine::Map*) {};
 
-    Engine::Character* m_char;
-    std::shared_ptr<Engine::Map> m_map;
 };

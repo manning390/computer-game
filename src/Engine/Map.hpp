@@ -11,11 +11,13 @@
 #include "Constant.hpp"
 
 #include "Atlas.hpp"
+#include "Entity.hpp"
 #include "Application.hpp"
+#include "Actions.hpp"
 
 namespace Engine {
   // Predefine trigger
-  struct Trigger;
+  class Trigger;
 
   class Map {
     public:
@@ -61,11 +63,21 @@ namespace Engine {
 
       std::shared_ptr<Engine::Trigger> getTrigger(uint t_x, uint t_y, uint t_layer = 0);
 
+      // Run all character controllers
+      bool update(float t_dt);
+
       // Renders the map
-      void render(std::shared_ptr<Engine::Window> t_window);
+      void render(std::shared_ptr<Engine::Window> t_window, std::shared_ptr<Engine::Entity> t_hero = nullptr);
+
+      std::shared_ptr<Engine::Entity> getEntity(uint t_x, uint t_y, uint t_layer = 0) const;
+      void addEntity(std::shared_ptr<Engine::Entity> t_entity);
+      void removeEntity(std::shared_ptr<Engine::Entity> t_entity);
 
       // Will be protected soon
       std::unordered_map<uint, std::shared_ptr<Engine::Trigger>> m_triggers;
+
+      std::map<uint, std::shared_ptr<Engine::Entity>> m_entities;
+      std::map<uint, std::shared_ptr<Engine::Character>> m_npcs;
 
     protected:
       float m_x = 0.0;
@@ -81,8 +93,8 @@ namespace Engine {
       sf::Sprite m_sprite;
 
       // In tiles
-      uint m_width;
-      uint m_height;
+      const uint m_width;
+      const uint m_height;
 
       uint m_width_pixel;
       uint m_height_pixel;
@@ -94,5 +106,6 @@ namespace Engine {
 
       std::vector<uint>& getLayer(uint t_layer_index = 0) const;
       void renderLayer(std::shared_ptr<Engine::Window> t_window, Engine::Layer& t_layer);
+      void renderEntities(std::shared_ptr<Engine::Window> t_window, uint t_layer, std::shared_ptr<Engine::Entity> t_hero = nullptr);
   };
 }

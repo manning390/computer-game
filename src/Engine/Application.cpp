@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "Atlas.hpp"
 
 void Engine::Application::processArguments([[maybe_unused]] int argc, [[maybe_unused]] const char **argv) {
   // Might do stuff here later
@@ -21,6 +22,10 @@ void Engine::Application::init() {
 
   // Load input
   loadBindings();
+
+  // Load defs
+  loadEntityDefs();
+  loadCharacterDefs();
 
   // Initiate the state stack
   m_stack = std::make_shared<Engine::StateStack>();
@@ -87,11 +92,10 @@ void Engine::Application::loadTilesets() {
     std::string file_path = line;
 
     // Instead of the manifest key, lets use what's in the tileset
-    auto tileset = std::make_shared<Engine::Tileset>(Engine::Tileset(file_path));
-
-    LOG_INFO("Loaded tileset {} -> {}", file_path, tileset->id);
+    auto tileset = std::make_shared<Engine::Tileset>(Engine::Tileset(this, file_path));
 
     m_tilesets[tileset->id] = tileset;
+    LOG_INFO("Loaded tileset {} -> {}", file_path, tileset->id);
   }
 }
 
@@ -107,24 +111,41 @@ void Engine::Application::loadTextures() {
     auto texture = std::make_shared<sf::Texture>();
     texture->loadFromFile(file_path);
 
-    LOG_INFO("Loaded texture: {} -> {}", file_path, key);
-
     m_textures[key] = texture;
+    LOG_INFO("Loaded texture: {} -> {}", file_path, key);
   }
 }
 
-std::shared_ptr<sf::Texture> Engine::Application::getTexture(std::string t_key) {
+std::shared_ptr<sf::Texture> Engine::Application::getTexture(std::string t_key) const {
   // LOG_TRACE("Engine::Application::getTexture({})", t_key);
 
   auto tex = m_textures.find(t_key);
-  return tex != m_textures.end() ? tex->second : nullptr;
+  assert(tex != m_textures.end() && "Texture not defined on fetch");
+  return tex->second;
 }
 
-std::shared_ptr<Engine::Tileset> Engine::Application::getTileset(std::string t_key) {
+std::shared_ptr<Engine::Tileset> Engine::Application::getTileset(std::string t_key) const {
   // LOG_TRACE("Engine::Application::getTileset({})", t_key);
 
   auto tileset = m_tilesets.find(t_key);
-  return tileset != m_tilesets.end() ? tileset->second : nullptr;
+  assert(tileset != m_tilesets.end() && "Tileset not defined on fetch");
+  return tileset->second;
+}
+
+Engine::EntityDef Engine::Application::getEntity(std::string t_key) const {
+  // LOG_TRACE("Engine::Application::getEntity({})", t_key);
+
+  auto def = m_entity_defs.find(t_key);
+  assert(def != m_entity_defs.end() && "EntityDef not defined on fetch");
+  return def->second;
+}
+
+Engine::CharacterDef Engine::Application::getCharacter(std::string t_key) const {
+  // LOG_TRACE("Engine::Application::getCharacter({})", t_key);
+
+  auto def = m_character_defs.find(t_key);
+  assert(def != m_character_defs.end() && "CharacterDef not defined on fetch");
+  return def->second;
 }
 
 void Engine::Application::loadBindings() {
@@ -144,5 +165,74 @@ void Engine::Application::loadBindings() {
   // }
 
   for (auto action : m_input->getBindings()) action.debug();
+}
+
+void Engine::Application::loadEntityDefs() {
+  LOG_TRACE("Engine::Application::loadEntityDefs()");
+
+  auto lines = Helper::getFileLines(m_entity_defs_path);
+  for (auto line : lines) {
+    if (line[0] == '#' || line == "") continue;
+    std::istringstream iss(line);
+    std::string id, tileset;
+    uint sf, tx, ty, l, w, h;
+    iss >> id >> tileset >> sf >> tx >> ty >> l >> w >> h;
+
+    m_entity_defs[id] = (Engine::EntityDef){id, m_tilesets.at(tileset), sf, tx, ty, l, w, h};
+    LOG_INFO("Loaded entity: {}", id);
+  }
+
+}
+
+void Engine::Application::loadCharacterDefs() {
+  LOG_TRACE("Engine::Application::loadCharacterDefs()");
+
+  auto lines = Helper::getFileLines(m_character_defs_path);
+  for (auto iter = lines.begin(); iter < lines.end(); iter++) {
+    if ((*iter)[0] == '#' || (*iter) == "") continue;
+    Engine::CharacterDef char_def;
+
+    std::istringstream iss(*iter);
+    std::string entity_key, sanity_check;
+    std::vector<std::string> states;
+    int anim_count, dir_x = 0, dir_y = 1;
+
+    // Load the first initial data of a character
+    iss >> char_def.id >> entity_key >> anim_count >> char_def.initial_state;
+    char_def.entity = m_entity_defs[entity_key];
+
+    // Check if dir is there, if not, we have defaults
+    if (!iss.eof()) iss >> dir_x >> dir_y;
+    char_def.initial_direction = {dir_x, dir_y};
+
+    // States
+    iter++;
+    iss = std::istringstream(*iter);
+    iss >> sanity_check;
+    assert(sanity_check == "states" && "Character Def data was not in expected format: states");
+    std::string state_key;
+    while(iss >> state_key) {
+      assert(m_state_factories.find(state_key) != m_state_factories.end() && "Character Def state data was not found in state factories");
+      char_def.states[state_key] = m_state_factories[state_key];
+    }
+
+    // Anims
+    for (int i = 0; i < anim_count; ++i) {
+      iter++;
+      iss = std::istringstream(*iter);
+      iss >> sanity_check;
+      assert(sanity_check == "anim" && "Character Def data was not in expected format: anim");
+      std::string anim_name;
+      std::vector<int> frame_data;
+      int frame;
+      iss >> anim_name;
+      while(iss >> frame) frame_data.push_back(frame);
+      char_def.anims[anim_name] = frame_data;
+    }
+
+    m_character_defs[char_def.id] = char_def;
+    LOG_INFO("Loaded character: {}", char_def.id);
+  }
+
 }
 

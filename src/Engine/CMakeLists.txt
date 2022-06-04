@@ -1,5 +1,5 @@
 add_library(engine
-    Actions.hpp
+    Actions.cpp
     Trigger.hpp
     Character.cpp
     Application.cpp

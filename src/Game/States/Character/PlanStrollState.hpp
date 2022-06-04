@@ -6,17 +6,28 @@
 
 class PlanStrollState : public Engine::EmptyState {
   public:
-    PlanStrollState(Engine::Character* t_char, std::shared_ptr<Engine::Map> t_map) :
-      m_char(t_char),
-      m_map(t_map) {};
+    PlanStrollState(Engine::Character* t_char, Engine::Map*) :
+      m_char(t_char) {};
+
 
 
     Engine::Character* m_char;
-    std::shared_ptr<Engine::Map> m_map;
 
     void enter() override {
       m_frame_count = 0;
       m_count_down = Helper::random(1, 4);
+
+      int frame;
+      if (m_char->m_direction.x == 1) {
+        frame = m_char->m_anims["right"][0];
+      } else if (m_char->m_direction.x == -1) {
+        frame = m_char->m_anims["left"][0];
+      } else if (m_char->m_direction.y == -1) {
+        frame = m_char->m_anims["up"][0];
+      } else if (m_char->m_direction.y == 1) {
+        frame = m_char->m_anims["down"][0];
+      }
+      m_char->m_entity->m_start_frame = frame;
     };
 
     bool update(float t_dt) override {

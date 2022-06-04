@@ -3,7 +3,6 @@
 #include "Entity.hpp"
 #include "IState.hpp"
 #include "Input.hpp"
-#include "Map.hpp"
 #include "Window.hpp"
 
 namespace Engine {

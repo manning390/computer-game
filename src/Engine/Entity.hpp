@@ -1,17 +1,23 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 
 #include "EntityDef.hpp"
-#include "Map.hpp"
 #include "Application.hpp"
 
 namespace Engine {
-  class Entity {
+  class Entity : public std::enable_shared_from_this<Entity> {
     public:
-      Entity(Engine::Application& t_app, const EntityDef &t_entity_def);
+      Entity(const EntityDef& t_def);
+
+      uint m_x, m_y;
+      uint m_tile_x, m_tile_y;
+      uint m_layer = 0;
+      uint m_start_frame = 0;
+      sf::Sprite m_sprite;
 
       void update(float t_delta);
 
@@ -20,19 +26,12 @@ namespace Engine {
       void setFrame(uint t_frame);
 
       // Not fully complete, just temp
-      void setTilePos(uint x, uint y, uint layer, std::shared_ptr<Engine::Map> t_map);
-      void setTilePos(uint t_x, uint t_y, std::shared_ptr<Engine::Map> t_map) {
+      void setTilePos(uint x, uint y, uint layer, Engine::Map* t_map);
+      void setTilePos(uint t_x, uint t_y, Engine::Map* t_map) {
         setTilePos(t_x, t_y, 0, t_map);
       };
       sf::Vector2i getTilePos() const;
 
-      sf::Sprite m_sprite;
-      uint m_tile_x;
-      uint m_tile_y;
-      uint m_layer = 0;
-      uint m_x;
-      uint m_y;
-      uint m_start_frame = 0;
 
     protected:
       // sf::Texture m_texture;

@@ -1,15 +1,18 @@
 #include "Atlas.hpp"
 
-Engine::Tileset::Tileset(const std::string t_file_path) {
-  std::vector<std::string> file_vec = Helper::getFileLines(t_file_path);
+Engine::Tileset::Tileset(Engine::Application* t_app, const std::string t_file_path) {
+  auto lines = Helper::getFileLines(t_file_path);
 
-  for (auto iter = file_vec.begin(); iter < file_vec.end(); iter++) {
+  for (auto iter = lines.begin(); iter < lines.end(); iter++) {
     std::istringstream iss(*iter);
-    std::string type;
+    std::string type, texture_manifest_key;
     iss >> type;
 
     if (type == "id") iss >> id;
-    else if (type == "texture") iss >> texture;
+    else if (type == "texture") {
+      iss >> texture_manifest_key;
+      texture = t_app->getTexture(texture_manifest_key);
+    }
     else if (type == "data") iss >> columns >> rows >> tile_height >> tile_width >> margin_x >> margin_y >> spacing;
   }
 
@@ -31,7 +34,10 @@ Engine::Atlas::Atlas(const std::string t_file_path) {
     if (type == "id") id = iss.str();
     else if (type == "name") name = iss.str();
     else if (type == "data") iss >> width >> height >> tile_width >> tile_height >> can_save;
-    else if (type == "tileset") {
+    else if (type == "on_wake") {
+      std::string key;
+      iss >> key;
+    } else if (type == "tileset") {
       uint first_tile;
       std::string tileset;
       iss >> first_tile >> tileset;

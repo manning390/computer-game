@@ -10,8 +10,12 @@
 #include "Log.hpp"
 #include "Constant.hpp"
 #include "Helper.hpp"
+#include "EntityDef.hpp"
+#include "Application.hpp"
 
 namespace Engine {
+  class Map;
+
   struct Layer {
     std::string name;
     std::vector<uint> base;
@@ -21,7 +25,7 @@ namespace Engine {
 
   class Tileset {
     public:
-      Tileset(const std::string t_file_path);
+      Tileset(Engine::Application* t_app, const std::string t_file_path);
 
       std::string id;
       uint columns;
@@ -31,9 +35,15 @@ namespace Engine {
       uint margin_x;
       uint margin_y;
       uint spacing;
-      std::string texture; // manifest key
+      std::shared_ptr<sf::Texture> texture;
       std::vector<sf::IntRect> uvs;
   };
+
+  // struct TriggerPos {
+    // std::string key;
+    // uint x;
+    // uint y;
+  // };
 
   class Atlas {
     public:
@@ -51,5 +61,10 @@ namespace Engine {
       // The first_tile_id, and the manifest key to the tileset
       std::unordered_map<uint, std::string> tilesets;
       std::vector<Layer> layers;
+
+      virtual void onWake(Engine::Map* t_map) {};
+
+      // std::unordered_map<std::string, TriggerPos> triggers;
+      // std::unordered_map<std::string, Trigger> trigger_types;
   };
 }

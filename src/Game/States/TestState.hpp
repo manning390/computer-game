@@ -20,7 +20,6 @@
 #include "Engine/Trigger.hpp"
 
 #include "Game/ComputerGame.hpp"
-#include "Game/EntityData.hpp"
 #include "Engine/Character.hpp"
 #include "Game/Maps/TestMap.hpp"
 
@@ -42,7 +41,5 @@ class TestState : public Engine::IState {
 
   protected:
     std::shared_ptr<Engine::Map> m_map;
-    std::shared_ptr<Engine::Character> m_char;
-    std::shared_ptr<Engine::Character> m_npc;
-    std::shared_ptr<Engine::Character> m_strolling_npc;
+    std::shared_ptr<Engine::Character> m_hero;
 };

@@ -1,0 +1,3 @@
+#id  tileset fr x y l w h
+hero monsters 0 1 1 0 0 0
+npc  monsters 1 8 9 0 0 0

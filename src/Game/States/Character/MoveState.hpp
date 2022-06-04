@@ -15,7 +15,7 @@
 
 class MoveState : public Engine::EmptyState {
   public:
-    MoveState(Engine::Character* t_char, std::shared_ptr<Engine::Map> t_map)
+    MoveState(Engine::Character* t_char, Engine::Map* t_map)
       : m_char(t_char),
         m_map(t_map)//,
         // m_anim(std::make_unique<Engine::Animation>(std::vector<int>(t_char->m_entity->m_start_frame)))
@@ -26,7 +26,7 @@ class MoveState : public Engine::EmptyState {
     const float m_move_speed = (1 - 0.7);
 
     Engine::Character* m_char;
-    std::shared_ptr<Engine::Map> m_map;
+    Engine::Map* m_map;
 
     sf::Vector2i m_movement  = {0, 0};
     sf::Vector2f m_pixel_pos = {0, 0};

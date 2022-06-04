@@ -25,8 +25,16 @@ void MoveState::enter() {
     m_movement.y = 0;
     entity->setFrame(m_anim->frame());
     m_char->m_controller->change(m_char->m_default_state);
-    return;
   }
+
+  if (m_movement.x != 0 || m_movement.y != 0) {
+    auto trigger = m_map->getTrigger(entity->m_tile_x, entity->m_tile_y, entity->m_layer);
+    if (trigger) trigger->m_on_exit(trigger, entity);
+  }
+
+  entity->setTilePos(entity->m_tile_x + m_movement.x, entity->m_tile_y + m_movement.y, entity->m_layer, m_map);
+  entity->m_sprite.setPosition(m_pixel_pos);
+
 
   // Check to see which direction we are moving, then get the tile width/height
   auto atlas = m_map->getAtlas();
@@ -56,18 +64,6 @@ bool MoveState::update(float t_dt) {
 void MoveState::exit() {
   // LOG_TRACE("MoveState::exit()");
   auto entity = m_char->m_entity;
-  if (m_movement.x != 0 || m_movement.y != 0) {
-    auto trigger = m_map->getTrigger(entity->m_tile_x, entity->m_tile_y, entity->m_layer);
-    if (trigger) trigger->m_on_exit(trigger, entity);
-  }
-
-  entity->m_tile_x = entity->m_tile_x + m_movement.x;
-  entity->m_tile_y = entity->m_tile_y + m_movement.y;
-
-  // 'Teleport' cause this will be deleted later
-  auto vec = m_map->tileToPixel(entity->m_tile_x, entity->m_tile_y);
-  entity->m_sprite.setPosition(vec.x, vec.y);
-
   auto trigger = m_map->getTrigger(entity->m_tile_x, entity->m_tile_y, entity->m_layer);
   if (trigger) trigger->m_on_enter(trigger, entity);
 };

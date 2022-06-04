@@ -14,12 +14,10 @@
 
 class WaitState : public Engine::EmptyState {
   public:
-    WaitState(Engine::Character* t_char, std::shared_ptr<Engine::Map> t_map) :
-      m_char(t_char),
-      m_map(t_map) {};
+    WaitState(Engine::Character* t_char, Engine::Map*) :
+      m_char(t_char) {};
 
     Engine::Character* m_char;
-    std::shared_ptr<Engine::Map> m_map;
 
     float m_frame_count = 0;
     float m_frame_reset_speed = 0.05;

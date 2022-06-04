@@ -1,4 +1,9 @@
 #include "ComputerGame.hpp"
+#include "States/TestState.hpp"
+#include "Game/States/Character/WaitState.hpp"
+#include "Game/States/Character/MoveState.hpp"
+#include "Game/States/Character/NPCStandState.hpp"
+#include "Game/States/Character/PlanStrollState.hpp"
 
 ComputerGame* ComputerGame::s_instance = nullptr;
 
@@ -19,6 +24,13 @@ void ComputerGame::init(void) {
     Engine::ActionBinding(InputActions::B,      Engine::EventType::Keyboard, sf::Keyboard::BackSpace),
     Engine::ActionBinding(InputActions::START,  Engine::EventType::Keyboard, sf::Keyboard::Z),
     Engine::ActionBinding(InputActions::SELECT, Engine::EventType::Keyboard, sf::Keyboard::X),
+  };
+
+  m_state_factories = {
+    {"wait", Engine::makeStateFactory<WaitState>()},
+    {"move", Engine::makeStateFactory<MoveState>()},
+    {"npc_stand", Engine::makeStateFactory<NPCStandState>()},
+    {"npc_stroll", Engine::makeStateFactory<PlanStrollState>()}
   };
 
   Application::init();

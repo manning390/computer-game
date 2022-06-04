@@ -1,10 +1,10 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "Engine/Input.hpp"
 #include "Engine/Application.hpp"
-#include "States/TestState.hpp"
 
 #include "InputActions.hpp"
 
@@ -19,7 +19,7 @@ class ComputerGame : public Engine::Application {
 
   protected:
     ComputerGame(void) :
-      Engine::Application("assets/manifests/tilesets.manifest", "assets/manifests/textures.manifest") {
+      Engine::Application("assets/manifests/tilesets.manifest", "assets/manifests/textures.manifest", "assets/entities.data", "assets/characters.data") {
         s_instance = this;
     };
 

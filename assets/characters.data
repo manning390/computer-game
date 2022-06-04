@@ -1,0 +1,18 @@
+# name entity anim_count initial_state dir_x? dir_y? tile_x? tile_y?
+# states state1 state2
+# anim anim_name data
+# anim anim_name data
+
+hero hero 4 wait 1 0
+states wait move
+anim right 0 4
+anim down  1 5
+anim up    2 6
+anim left  3 7
+
+strolling_npc hero 4 npc_stroll 0 1
+states npc_stroll move
+anim right 0 4
+anim down  1 5
+anim up    2 6
+anim left  3 7
