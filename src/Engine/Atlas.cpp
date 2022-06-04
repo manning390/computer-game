@@ -34,10 +34,7 @@ Engine::Atlas::Atlas(const std::string t_file_path) {
     if (type == "id") id = iss.str();
     else if (type == "name") name = iss.str();
     else if (type == "data") iss >> width >> height >> tile_width >> tile_height >> can_save;
-    else if (type == "on_wake") {
-      std::string key;
-      iss >> key;
-    } else if (type == "tileset") {
+    else if (type == "tileset") {
       uint first_tile;
       std::string tileset;
       iss >> first_tile >> tileset;
