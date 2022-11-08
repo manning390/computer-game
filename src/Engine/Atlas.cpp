@@ -23,6 +23,7 @@ Engine::Tileset::Tileset(Engine::Application* t_app, const std::string t_file_pa
   // : Engine::Atlas::Atlas(t_asset_provider.getAtlas(t_manifest_key)) { }
 
 Engine::Atlas::Atlas(const std::string t_file_path) {
+  m_data_file = t_file_path;
 
   std::vector<std::string> file_vec = Helper::getFileLines(t_file_path);
 
@@ -33,12 +34,21 @@ Engine::Atlas::Atlas(const std::string t_file_path) {
 
     if (type == "id") id = iss.str();
     else if (type == "name") name = iss.str();
-    else if (type == "data") iss >> width >> height >> tile_width >> tile_height >> can_save;
-    else if (type == "tileset") {
+    else if (type == "data") iss >> m_width >> m_height >> m_tile_width >> m_tile_height >> can_save;
+    else if (type == "trig") {
+      std::string trig_name;
+      uint x, y;
+      iss >> trig_name >> x >> y;
+      m_triggers[coordToIndex(x, y)] = trig_name;
+    // } else if (type == "ttrig") {
+    //   std::string trig_name, enter, exit, use;
+    //   iss >> trig_name >> enter >> exit >> use;
+    //   m_triggers[coordToIndex(x, y)] = trig_name;
+    } else if (type == "tileset") {
       uint first_tile;
       std::string tileset;
       iss >> first_tile >> tileset;
-      tilesets[first_tile] = tileset;
+      m_tilesets[first_tile] = tileset;
     } else if (type == "layer") {
       Layer l;
       iss >> l.name;
@@ -58,7 +68,7 @@ Engine::Atlas::Atlas(const std::string t_file_path) {
       iss = std::istringstream(*iter);
       while (iss >> val) l.collision.push_back(val);
 
-      layers.push_back(l);
+      m_layers.push_back(l);
     }
   }
 

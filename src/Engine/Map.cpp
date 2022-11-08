@@ -5,10 +5,10 @@
 Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) :
   m_window(t_app.m_window),
   m_atlas(t_atlas),
-  m_width(t_atlas->width),
-  m_height(t_atlas->height),
-  m_tile_width(t_atlas->tile_width),
-  m_tile_height(t_atlas->tile_height)
+  m_width(t_atlas->m_width),
+  m_height(t_atlas->m_height),
+  m_tile_width(t_atlas->m_tile_width),
+  m_tile_height(t_atlas->m_tile_height)
 {
   LOG_TRACE("Engine::Map::Map()");
 
@@ -23,7 +23,7 @@ Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) :
   m_cam = (sf::Vector2i)view.getCenter();
 
   // Get the blocking tile by searching for the collision tileset
-  for (auto tileset_iter = t_atlas->tilesets.begin(); tileset_iter != t_atlas->tilesets.end(); tileset_iter++) {
+  for (auto tileset_iter = t_atlas->m_tilesets.begin(); tileset_iter != t_atlas->m_tilesets.end(); tileset_iter++) {
     auto tileset = t_app.getTileset(tileset_iter->second);
 
     uint tile_id_iter = tileset_iter->first;
@@ -37,6 +37,7 @@ Engine::Map::Map(Application& t_app, std::shared_ptr<Engine::Atlas> t_atlas) :
     }
   }
   LOG_INFO("Blocking tile is: {}", m_blocking_tile);
+  // Last thing to run
   m_atlas->onWake(this);
 }
 
@@ -113,7 +114,7 @@ sf::Vector2u Engine::Map::getSizeT(void) const {
 }
 
 std::vector<uint>& Engine::Map::getLayer(uint t_layer_index) const {
-  auto& atlas_layer = m_atlas->layers[t_layer_index / 3];
+  auto& atlas_layer = m_atlas->m_layers[t_layer_index / 3];
   auto index = t_layer_index % 3;
 
   if (index == 0) return atlas_layer.base;
@@ -122,14 +123,15 @@ std::vector<uint>& Engine::Map::getLayer(uint t_layer_index) const {
 }
 
 uint Engine::Map::coordToIndex(uint t_x, uint t_y, uint t_layer) const {
-  return (t_layer * m_width * m_height) + t_x + (t_y * m_width);
+  return Helper::coordToIndex(m_width, m_height, t_x, t_y, t_layer);
 }
 
 uint Engine::Map::getTileId(uint t_tx, uint t_ty, uint t_layer_index) const {
   return getLayer(t_layer_index)[t_tx + (t_ty * m_width)];
 }
 
-bool Engine::Map::isBlocked(uint t_layer, uint t_tx, uint t_ty) const {
+bool Engine::Map::isBlocked(uint t_tx, uint t_ty, uint t_layer) const {
+  // LOG_TRACE("Engine::Map::isBlocked({}, {}, {})", t_tx, t_ty, t_layer);
   auto tile = getTileId(t_tx, t_ty, t_layer + 2);
   auto entity = getEntity(t_tx, t_ty, t_layer);
   return tile == m_blocking_tile || entity != nullptr;
@@ -163,7 +165,7 @@ void Engine::Map::render(std::shared_ptr<Engine::Window> t_window, std::shared_p
   t_window->draw(map_bg);
 
   auto i = 0;
-  for (auto& layer: m_atlas->layers) {
+  for (auto& layer: m_atlas->m_layers) {
     renderLayer(t_window, layer);
     renderEntities(t_window, i, t_hero);
     ++i;
@@ -211,15 +213,17 @@ void Engine::Map::renderEntities(std::shared_ptr<Engine::Window> t_window, uint 
   std::map<uint, std::shared_ptr<Engine::Entity>> drawList(m_entities);
 
   if(t_hero != nullptr) drawList[coordToIndex(t_hero->m_tile_x, t_hero->m_tile_y, t_hero->m_layer)] = t_hero;
+  
   for(auto& [i, entity] : drawList) {
-    if(i < layerOffset * t_layer) continue; // Skip any entity below our layer offset range
+    if (i < layerOffset * t_layer) continue; // Skip any entity below our layer offset range
     if (i > layerOffset * (t_layer + 1)) break; // Stop looping once we're past our layer offset range
+    // LOG_DEBUG("Render entity");
     entity->render(t_window);
   }
 };
 
 std::shared_ptr<Engine::Entity> Engine::Map::getEntity(uint t_x, uint t_y, uint t_layer) const {
-  // LOG_TRACE("Engine::Map::getEntity()");
+  // LOG_TRACE("Engine::Map::getEntity(t_x, t_y, t_layer)");
   auto index = coordToIndex(t_x, t_y, t_layer);
   auto iter = m_entities.find(index);
   return iter == m_entities.end() ? nullptr : iter->second;

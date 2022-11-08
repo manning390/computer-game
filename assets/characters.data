@@ -3,7 +3,7 @@
 # anim anim_name data
 # anim anim_name data
 
-hero hero 4 wait 1 0
+hero hero 4 wait 1 1
 states wait move
 anim right 0 4
 anim down  1 5

@@ -6,7 +6,6 @@ TestState::TestState(std::shared_ptr<Engine::StateStack> t_stack) {
   auto& app = *ComputerGame::instance();
   m_map = std::make_shared<Engine::Map>(app, std::make_shared<Maps::TestMap>());
   // m_map->centerMapInView();
-  auto what = app.getCharacter("hero");
   m_hero = std::make_shared<Engine::Character>(app.getCharacter("hero"), m_map.get());
   m_hero->m_entity->setTilePos(
     m_hero->m_entity->m_tile_x,

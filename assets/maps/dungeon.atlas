@@ -1,6 +1,10 @@
 # id: map_id
 # name: name of the map
 # data: columns rows tile_width tile_height can_save
+# fnmap: idk man
+# These must be defined after the fnmap
+# ttrig: trigger_name enter_action exit_action use_action
+# trig: trigger_name x y
 # tileset: first_tile_id tileset_manifest_key
 # layer: name
 # layer_data_background_section
@@ -9,6 +13,13 @@
 id dungeon
 name Closed Room
 data 17 15 10 10 false
+fmaps tele_north
+fmaps tele_south
+ttrig north_stair_trigger e tele_south e
+ttrig south_stair_trigger e tele_north e
+trig north_stair_trigger 2 2
+trig south_stair_trigger 2 12
+trig south_chest_trigger 2 9
 tileset 1 dungeon
 tileset 56 collision
 layer base

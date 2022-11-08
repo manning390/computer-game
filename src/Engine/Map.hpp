@@ -35,7 +35,7 @@ namespace Engine {
       uint getTileId(uint t_x, uint t_y, uint t_layer_index = 0) const;
 
       // Check collision at coordinate
-      bool isBlocked(uint t_layer, uint t_tx, uint t_ty) const;
+      bool isBlocked(uint t_tx, uint t_ty, uint t_layer) const;
 
       // Converts coordinate to single dimension index
       uint coordToIndex(uint t_x, uint t_y, uint t_layer = 0) const;

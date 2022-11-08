@@ -2,13 +2,13 @@
 
 #include <functional>
 
-#include "Map.hpp"
 #include "Entity.hpp"
 #include "EntityDef.hpp"
 #include "Character.hpp"
 
 namespace Engine {
   class Trigger;
+  class Map;
 };
 
 namespace Actions {

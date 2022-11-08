@@ -2,6 +2,7 @@
 #include "Map.hpp"
 
 Engine::Entity::Entity(const EntityDef& t_def) {
+  m_id = t_def.id;
   m_tileset = t_def.tileset;
   m_sprite = sf::Sprite(*m_tileset->texture, m_tileset->uvs[t_def.start_frame]);
   m_width = t_def.width == 0 ?

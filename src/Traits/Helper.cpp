@@ -63,3 +63,7 @@ int Helper::random(int t_max) {
 int Helper::random(int t_min, int t_max) {
   return (rand() % (t_max + 1 - t_min)) + t_min;
 };
+
+uint Helper::coordToIndex(uint t_w, uint t_h, uint t_x, uint t_y, uint t_l) {
+  return (t_l * t_w * t_h) + t_x + (t_y * t_w);
+};

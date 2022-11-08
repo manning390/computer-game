@@ -20,11 +20,13 @@ void MoveState::enter() {
 
   auto target_x = m_movement.x + entity->m_tile_x;
   auto target_y = m_movement.y + entity->m_tile_y;
-  if (m_map->isBlocked(0, target_x, target_y)) {
+  // LOG_DEBUG("move {}, {} -> {}, {}", entity->m_tile_x, entity->m_tile_y, target_x, target_y);
+  if (m_map->isBlocked(target_x, target_y, 0)) {
     m_movement.x = 0;
     m_movement.y = 0;
     entity->setFrame(m_anim->frame());
     m_char->m_controller->change(m_char->m_default_state);
+    return;
   }
 
   if (m_movement.x != 0 || m_movement.y != 0) {
@@ -38,7 +40,7 @@ void MoveState::enter() {
 
   // Check to see which direction we are moving, then get the tile width/height
   auto atlas = m_map->getAtlas();
-  auto distance = m_movement.y == 0 ? atlas->tile_width : atlas->tile_width;
+  auto distance = m_movement.y == 0 ? atlas->m_tile_width : atlas->m_tile_width;
   m_tween = std::make_unique<Engine::Tween>(0, distance, m_move_speed, Tween::Linear);
 };
 

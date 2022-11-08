@@ -1,5 +1,6 @@
 #include "Actions.hpp"
 #include "Trigger.hpp"
+#include "Map.hpp"
 
 Actions::ActionFn Actions::Teleport(Engine::Map* t_map, uint t_tile_x, uint t_tile_y, uint t_layer) {
     // LOG_TRACE("Actions::Teleport()");
@@ -20,6 +21,7 @@ Actions::ActionFn Actions::AddNPC(Engine::Map* t_map, const Engine::CharacterDef
     auto l = t_layer  >= 0 ? t_layer  : entity->m_layer;
     entity->setTilePos(x, y, l, t_map);
 
+    LOG_DEBUG("Placing NPC {} at {}", t_def.id, t_map->coordToIndex(x, y, l));
     t_map->m_npcs[t_map->coordToIndex(x, y, l)] = character;
   };
 };

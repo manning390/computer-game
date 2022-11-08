@@ -13,6 +13,7 @@ namespace Engine {
     public:
       Entity(const EntityDef& t_def);
 
+      std::string m_id;
       uint m_x, m_y;
       uint m_tile_x, m_tile_y;
       uint m_layer = 0;

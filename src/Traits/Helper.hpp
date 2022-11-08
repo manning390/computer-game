@@ -27,4 +27,6 @@ namespace Helper {
 
   int random(int t_max);
   int random(int t_min, int t_max);
+
+  uint coordToIndex(uint t_w, uint t_h, uint t_x, uint t_y, uint t_l = 0);
 }

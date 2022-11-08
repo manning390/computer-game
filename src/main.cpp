@@ -5,7 +5,7 @@
 #include "Constant.hpp"
 #include "Game/ComputerGame.hpp"
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
+int main(int argc, const char **argv)
 {
   // Start logging
   Log::init();
