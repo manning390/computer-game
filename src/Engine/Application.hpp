@@ -66,6 +66,7 @@ namespace Engine {
         m_entity_defs_path(t_entity_defs_path),
         m_character_defs_path(t_character_defs_path) {};
 
+      uint m_seed = 0;
       const std::string m_tilesets_manifest_path;
       const std::string m_textures_manifest_path;
       const std::string m_entity_defs_path;
@@ -114,6 +115,12 @@ namespace Engine {
       *
       */
       void loop();
+
+      /**
+       * @brief Seed the random number generator, can be provided as argument or if not provided time since epoch
+       *
+       */
+      void seedRandom();
 
       /**
       * @brief Load all the tilesets and store them in a hashmap

@@ -1,9 +1,14 @@
 #include "Application.hpp"
 #include "Atlas.hpp"
 
-void Engine::Application::processArguments([[maybe_unused]] int argc, [[maybe_unused]] const char **argv) {
-  // Might do stuff here later
-  // LOG_TRACE("Engine::Application::processArguments()");
+void Engine::Application::processArguments(int argc, const char **argv) {
+  LOG_TRACE("Engine::Application::processArguments()");
+
+  if (argc < 2) return; // Don't process if there isn't any (./game always present)
+
+  // Setting a seed with second arg
+  std::istringstream reader(argv[1]);
+  reader >> m_seed;
 }
 
 void Engine::Application::init() {
@@ -13,8 +18,8 @@ void Engine::Application::init() {
   m_window = std::make_shared<Engine::Window>();
   m_frame_time = sf::seconds(1.0 / m_window->getFps());
 
-  // Seed random?
-  // Todo setup random
+  // Seed random
+  seedRandom();
 
   // Load assets
   loadTextures();
@@ -29,6 +34,16 @@ void Engine::Application::init() {
 
   // Initiate the state stack
   m_stack = std::make_shared<Engine::StateStack>();
+}
+
+void Engine::Application::seedRandom() {
+  LOG_TRACE("Engine::Application::seedRand()");
+
+  // If no seed has been set 
+  if (m_seed == 0) m_seed = time(0);
+
+  LOG_INFO("Seeded with {}", m_seed);
+  srand(m_seed);
 }
 
 void Engine::Application::quit() {
